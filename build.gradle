@@ -17,7 +17,7 @@ dependencies {
     testImplementation "junit:junit:${jUnitVersion}"
     testImplementation "org.scalatest:scalatest_${scalaversion}:${scalatestversion}+"
     testImplementation "org.scalatestplus:scalatestplus-junit_${scalaversion}:1.0.0+"
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+    testCompile "org.cassandraunit:cassandra-unit:3.11.2.0"
 
 }
 
