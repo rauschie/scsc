@@ -10,10 +10,10 @@ sealed trait FilterNames[L <: HList, N <: HList] {
   def apply(columns: L, names: N): Out
 }
 
-object FilterNames {
+/*object FilterNames {
   type Aux[L <: HList, N <: HList, Out0 <: HList] = FilterNames[L, N] {type Out = Out0}
 
-  /*
+
   L empty? =>ret
   N empty? =>ret
   else filter [L, n.head]
@@ -27,7 +27,7 @@ object FilterNames {
   Aux[LH::LT,HNil,O]
    */
 
-  implicit def hConsColumnsWithHConsNames[
+ /* implicit def hConsColumnsWithHConsNames[
     L <: HList,
     H <: Singleton with String,
     T <: HList,
@@ -51,4 +51,4 @@ object FilterNames {
   implicit def hConsColumnsWithHNilNames[H, T <: HList]: Aux[H :: T, HNil, HNil] = ???
 
   implicit def hNilColumnsWithHConsNames[H, T <: HList]: Aux[HNil, H :: T, HNil] = ???
-}
+}*/

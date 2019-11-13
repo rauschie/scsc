@@ -1,6 +1,7 @@
 package scsc
 
 import com.datastax.driver.core.Session
+import com.datastax.oss.driver.api.core.session.Session
 import scsc.cql.{Create, InsertInto}
 import scsc.ops.columnfamily.{Columns, KeyColumns}
 import scsc.ops.columns.BoundStatementSetter

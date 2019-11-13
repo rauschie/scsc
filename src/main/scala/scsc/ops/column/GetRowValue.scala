@@ -1,6 +1,6 @@
 package scsc.ops.column
 
-import com.datastax.driver.core.Row
+import com.datastax.oss.driver.api.core.cql.Row
 import scsc.Column
 import scsc.ops.Get
 

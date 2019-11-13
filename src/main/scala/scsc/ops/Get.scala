@@ -2,9 +2,10 @@ package scsc.ops
 
 import java.net.InetAddress
 import java.nio.ByteBuffer
+import java.time.LocalDate
 import java.util.UUID
 
-import com.datastax.driver.core.{LocalDate, Row}
+import com.datastax.oss.driver.api.core.cql.Row
 
 trait Get[A] {
   def apply(row: Row, columnName: String): A
@@ -13,23 +14,23 @@ trait Get[A] {
 object Get {
 
   implicit object getBoolean extends Get[Boolean] {
-    def apply(row: Row, columnName: String): Boolean = row.getBool(columnName)
+    def apply(row: Row, columnName: String): Boolean = row.getBoolean(columnName)
   }
 
   implicit object getByteBuffer extends Get[ByteBuffer] {
-    def apply(row: Row, columnName: String): ByteBuffer = row.getBytes(columnName)
+    def apply(row: Row, columnName: String): ByteBuffer = row.getByteBuffer(columnName)
   }
 
   implicit object getDate extends Get[LocalDate] {
-    def apply(row: Row, columnName: String): LocalDate = row.getDate(columnName)
+    def apply(row: Row, columnName: String): LocalDate = row.getLocalDate(columnName)
   }
 
   implicit object getBigDecimal extends Get[BigDecimal] {
-    def apply(row: Row, columnName: String): BigDecimal = row.getDecimal(columnName)
+    def apply(row: Row, columnName: String): BigDecimal = row.getBigDecimal(columnName)
   }
 
   implicit object getBigInt extends Get[BigInt] {
-    def apply(row: Row, columnName: String): BigInt = row.getVarint(columnName)
+    def apply(row: Row, columnName: String): BigInt = row.getBigInteger(columnName)
   }
 
   implicit object getDouble extends Get[Double] {
@@ -45,11 +46,11 @@ object Get {
   }
 
   implicit object getInetAddress extends Get[InetAddress] {
-    def apply(row: Row, columnName: String): InetAddress = row.getInet(columnName)
+    def apply(row: Row, columnName: String): InetAddress = row.getInetAddress(columnName)
   }
 
   implicit object getUUID extends Get[UUID] {
-    def apply(row: Row, columnName: String): UUID = row.getUUID(columnName)
+    def apply(row: Row, columnName: String): UUID = row.getUuid(columnName)
   }
 
   implicit object getString extends Get[String] {

@@ -1,6 +1,6 @@
 package scsc.ops
 
-import com.datastax.driver.core.BoundStatement
+import com.datastax.oss.driver.api.core.cql.BoundStatement
 
 trait Set[A] {
   def apply(boundStatement: BoundStatement, columnName: String, v: A): BoundStatement
@@ -9,7 +9,7 @@ trait Set[A] {
 object Set {
 
   implicit object setBoolean extends Set[Boolean] {
-    def apply(boundStatement: BoundStatement, columnName: String, v: Boolean): BoundStatement = boundStatement.setBool(columnName, v)
+    def apply(boundStatement: BoundStatement, columnName: String, v: Boolean): BoundStatement = boundStatement.setBoolean(columnName, v)
   }
 
   implicit object setDouble extends Set[Double] {

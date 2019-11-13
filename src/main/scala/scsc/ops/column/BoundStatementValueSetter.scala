@@ -1,6 +1,6 @@
 package scsc.ops.column
 
-import com.datastax.driver.core.BoundStatement
+import com.datastax.oss.driver.api.core.cql.BoundStatement
 import scsc.Column
 import scsc.ops.Set
 
