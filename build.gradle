@@ -9,13 +9,13 @@ dependencies {
     def shapelessversion = "2.3.3"
     def cassandradriverversion = "3.6.0"
     def scalatestversion = "3.1.0"
-    def jUnitVersion = "4.12"
+    def jUnitVersion = "5.2"
 
     implementation "org.scala-lang:scala-library:${scalaversion}+"
     implementation "com.chuusai:shapeless_${scalaversion}:${shapelessversion}+"
     implementation "com.datastax.cassandra:cassandra-driver-core:${cassandradriverversion}+"
-    testImplementation "junit:junit:${jUnitVersion}"
     testImplementation "org.scalatest:scalatest_${scalaversion}:${scalatestversion}+"
+    testCompile "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}+"
     testImplementation "org.scalatestplus:scalatestplus-junit_${scalaversion}:1.0.0+"
     testCompile "org.cassandraunit:cassandra-unit:3.11.2.0"
 
