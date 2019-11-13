@@ -1,0 +1,20 @@
+no macros
+typesafe CRUD : KV Store
+columnar access
+moeglichst simple table creation
+
+create: Table => Unit
+put: Table X Row => Unit
+insert into table val ***
+put: Table X Iterable[Row] => Unit
+
+get: Table X Key => Row
+table.get(key:K)
+get: Table X Iterable[Key] => Iterable[Row]
+get: Table X Column =>
+def get[T<: Singleton with String](implicit valueof:valueOf[T], )
+get: Table X Key X Column => Seq[Column.T]
+get: Table X Key X Key X Column => Seq[Column.T]
+
+delete: Table X Key => Unit
+delete: Table X Iterable[Key] => Unit

@@ -1,0 +1,26 @@
+plugins {
+    id 'scala'
+}
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.additionalParameters = ["-Xlog-implicits"]
+}
+dependencies {
+    def scalaversion = "2.13"
+    def shapelessversion = "2.3.3"
+    def cassandradriverversion = "3.6.0"
+    def scalatestversion = "3.1.0"
+    def jUnitVersion = "4.12"
+
+    implementation "org.scala-lang:scala-library:${scalaversion}+"
+    implementation "com.chuusai:shapeless_${scalaversion}:${shapelessversion}+"
+    implementation "com.datastax.cassandra:cassandra-driver-core:${cassandradriverversion}+"
+    testImplementation "junit:junit:${jUnitVersion}"
+    testImplementation "org.scalatest:scalatest_${scalaversion}:${scalatestversion}+"
+    testImplementation "org.scalatestplus:scalatestplus-junit_${scalaversion}:1.0.0+"
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+
+}
+
+repositories {
+    jcenter()
+}
