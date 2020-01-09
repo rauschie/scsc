@@ -1,9 +1,10 @@
-package scsc.ops.boundstatement
+package scsc.ops.hlist
 
 import com.datastax.oss.driver.api.core.cql.BoundStatement
+import scsc.ops.boundstatement.Setter
 import shapeless.{::, HList, HNil}
 
-trait SetColumnValues[L <: HList] {
+sealed trait SetColumnValues[L] {
   type Record <: HList
 
   def apply(boundStatement: BoundStatement, record: Record): BoundStatement
@@ -13,7 +14,7 @@ object SetColumnValues {
 
   import scsc.Column
 
-  type Aux[L <: HList, R <: HList] = SetColumnValues[L] {type Record = R}
+  type Aux[L, R <: HList] = SetColumnValues[L] {type Record = R}
 
   implicit def setHCons[N <: Singleton with String,
     V: Setter,

@@ -1,4 +1,4 @@
-package scsc
+package scsc.ops
 
 package object crud {
 
@@ -9,6 +9,7 @@ package object crud {
   object columnNames extends Poly1 {
 
     import scsc.ops.cqltype.GetCqlTypeName
+    import scsc.{Column, CqlType}
 
     implicit def hConsCase[A, C <: CqlType](implicit ev: A <:< Column[C],
                                             nameOfType: GetCqlTypeName[C]): Case.Aux[A, String] = at(column =>

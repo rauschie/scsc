@@ -1,72 +1,97 @@
-package scsc.ops.hlist
+package scsc.ops
 
-import shapeless.ops.hlist.{Mapper, Prepend}
-import shapeless.{HList, HNil}
+import shapeless.HList
 
-trait ColumnContext[L <: HList] {
-  type Out <: HList
-  type Unwrapped <: HList
+import scsc.ops.crud.Create
 
-  def map: L => Out
+//import scsc.ops.crud.Put
+trait Context[P0 <: HList, C0 <: HList, O0 <: HList] {
+
+  type KeyColumns <: HList
+  type AllColumns <: HList
+  type Key <: HList
+  type Record <: HList
+  val create: Create[P0, C0, O0]
+  //val put: Put[KeyColumns, OptionalColumns]
 }
 
-object ColumnContext {
+object Context {
 
-  type Aux[L <: HList,
-    O <: HList,
-    U <: HList] = ColumnContext[L] {
-    type Out = O
-    type Unwrapped = U
+  import scsc.ops.crud.Put
+
+  type Aux[P0 <: HList, C0 <: HList, O0 <: HList,
+    KC <: HList,
+    K <: HList, R <: HList] = Context[P0, C0, O0] {
+    type KeyColumns = KC
+    type Key = K
+    type Record = R
   }
 
-  trait KeyColumnContext[L <: HList] extends ColumnContext[L]
+  implicit def context[P0 <: HList, C0 <: HList, O0 <: HList,
+    K <: HList, O <: HList,
+    KeyFields <: HList, OptionalFields <: HList](implicit describeKey: KeyDescriptor[P0, C0],
+                                                 describeRecord: RecordDescriptor[P0, C0, O0],
+                                                 c: Create[P0, C0, O0],
+                                                 p: Put[K, O]): Aux[P0, C0, O0, describeKey.Columns, describeKey.Key, describeRecord.Record] = new Context[P0, C0, O0] {
+    type KeyColumns = describeKey.Columns
+    type Key = describeKey.Key
+    type Record = describeRecord.Record
+    val create: Create[P0, C0, O0] = c
+    //  val put: Put[K, O] = p
+  }
 
-  trait OptionalColumnContext[L <: HList] extends ColumnContext[L]
 
-  object KeyColumnContext {
+  sealed trait KeyDescriptor[P0, C0] {
+    type Columns <: HList
+    type Key <: HList
+  }
 
-    import scsc.polymappings.toKeyColumns
+  sealed trait RecordDescriptor[P, C, O] {
+    type Columns <: HList
+    type Record <: HList
+  }
 
-    implicit def keyColumnsContext[P0 <: HList, P <: HList](implicit mapper: Mapper.Aux[toKeyColumns.type, P0, P],
-                                                            extractUnderlying: ExtractUnderlying[P]): Aux[P0, P, extractUnderlying.Out] = new ColumnContext[P0] {
-      type Out = P
-      type Unwrapped = extractUnderlying.Out
+  object KeyDescriptor {
+    type Aux[P0, C0, KC <: HList, K <: HList] = KeyDescriptor[P0, C0] {
+      type KeyColumns = KC
+      type Key = K
+    }
 
-      def map: P0 => P = _ map toKeyColumns
+    import scsc.ops.hlist.{Extract, ToKey}
+    import shapeless.ops.hlist.Prepend
+    import shapeless.HList
+
+    implicit def keyDescriptor[P0, C0,
+      P <: HList, C <: HList,
+      UP <: HList, UC <: HList](implicit ev1: P0 ToKey P,
+                                ev2: C0 ToKey C,
+                                ev3: P Extract UP,
+                                ev4: C Extract UC,
+                                prependColumns: P Prepend C,
+                                prependKey: UP Prepend UC): Aux[P0, C0, prependColumns.Out, prependKey.Out] = new KeyDescriptor[P0, C0] {
+      type KeyColumns = prependColumns.Out
+      type Key = prependKey.Out
     }
   }
 
-  object OptionalColumnContext {
+  object RecordDescriptor {
 
-    import scsc.polymappings.toOptionalColumns
+    import scsc.ops.hlist.{Extract, ToOptional}
+    import shapeless.ops.hlist.Prepend
 
-    implicit def optionalColumnsContext[O0 <: HList, O <: HList](implicit mapper: Mapper.Aux[toOptionalColumns.type, O0, O],
-                                                                 extractUnderlying: ExtractUnderlying[O]): Aux[O0, O, extractUnderlying.Out] = new ColumnContext[O0] {
-      type Out = O
-      type Unwrapped = extractUnderlying.Out
+    type Aux[P, C, O, C0 <: HList, R <: HList] = RecordDescriptor[P, C, O] {
+      type Columns = C0
+      type Record = R
+    }
 
-      def map: O0 => O = _ map toOptionalColumns
+    implicit def recordDescriptor[P0, C0, KC <: HList, K <: HList, O0, O <: HList, UO <: HList](implicit key: KeyDescriptor.Aux[P0, C0, KC, K],
+                                                                                                ev: O0 ToOptional O,
+                                                                                                ev1: O Extract UO,
+                                                                                                columnsPrepend: KC Prepend O,
+                                                                                                recordPrepend: K Prepend UO): Aux[P0, C0, O0, columnsPrepend.Out, recordPrepend.Out] = new RecordDescriptor[P0, C0, O0] {
+      type Columns = columnsPrepend.Out
+      type Record = recordPrepend.Out
     }
   }
 
-  /*implicit def masghsgd[P0 <: HList,
-    P <: HList,
-    C0 <: HList,
-    C <: HList,
-    K0 <: HList](implicit partitioningMapper: Mapper.Aux[KeyContext.type, P0, P],
-                 clusteringMapper: Mapper.Aux[KeyContext.type, C0, C],
-                 prepend: Prepend.Aux[P, C, K0],
-                 extractUnderlying: ExtractUnderlying[K0]): Aux[P0, C0, HNil, P, C, HNil, extractUnderlying.Out, extractUnderlying.Out] = new ColumnContext[P0, C0, HNil] {
-    type PartitioningColumns = P
-    type ClusteringColumns = C
-    type OptionalColumns = HNil
-    type Key = extractUnderlying.Out
-    type Record = extractUnderlying.Out
-
-    val mapPartitioningColumns: P0 => P = _ map KeyContext
-
-    val mapClusteringColumns: C0 => C = _ map KeyContext
-
-    val mapOptionalColumns: HNil => HNil = _ => HNil
-  }*/
 }

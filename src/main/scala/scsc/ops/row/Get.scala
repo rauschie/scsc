@@ -1,4 +1,4 @@
-package scsc.ops
+package scsc.ops.row
 
 import java.net.InetAddress
 import java.nio.ByteBuffer

@@ -1,141 +1,98 @@
 package scsc
 
-import java.net.InetAddress
-import java.nio.ByteBuffer
-import java.sql.Timestamp
-import java.util.Date
 
-import com.datastax.oss.driver.api.core.CqlIdentifier
+import scsc.ops.cqltype.GetCqlTypeName
 
-sealed trait CqlType {
-  type JavaType
-}
 
-sealed trait RawCqlType extends CqlType
+sealed trait CqlType
 
-final class TaggedCqlType[A <: RawCqlType, B <: Singleton with String](nameTag: B)(implicit cqlType: A) extends CqlType {
-  type JavaType = cqlType.JavaType
-  type Name = B
-  val cqlIdentifier: CqlIdentifier = CqlIdentifier.fromCql(nameTag)
-}
 
-object RawCqlType {
-  type Aux[A] = RawCqlType {type JavaType = A}
+object CqlType {
 
-  sealed trait ASCII extends RawCqlType {
-    type JavaType = String
+  sealed trait BIGINT extends CqlType
+
+  sealed trait BLOB extends CqlType
+
+  sealed trait BOOLEAN extends CqlType
+
+  sealed trait COUNTER extends CqlType
+
+  sealed trait DATE extends CqlType
+
+  sealed trait DECIMAL extends CqlType
+
+  sealed trait DOUBLE extends CqlType
+
+  sealed trait DURATION extends CqlType
+
+  sealed trait FLOAT extends CqlType
+
+  sealed trait INET extends CqlType
+
+  sealed trait INT extends CqlType
+
+  sealed trait SMALLINT extends CqlType
+
+  sealed trait TEXT extends CqlType
+
+  sealed trait TIME extends CqlType
+
+  sealed trait TIMESTAMP extends CqlType
+
+  sealed trait TIMEUUID extends CqlType
+
+  sealed trait TINYINT extends CqlType
+
+  sealed trait UUID extends CqlType
+
+  sealed trait VARINT extends CqlType
+
+  sealed trait ASCII extends CqlType
+
+  sealed trait CqlTypeOps[C <: CqlType] {
+    def getName(implicit toString: GetCqlTypeName[C]): String = toString()
+
+    def apply[N <: Singleton with String : ValueOf]: Column.Aux[C, N] = Column[C, N]
   }
 
-  implicit object ASCII extends ASCII
+  implicit object BLOB extends CqlTypeOps[BLOB]
 
-  sealed trait BIGINT extends RawCqlType {
-    type JavaType = Long
-  }
+  implicit object BOOLEAN extends CqlTypeOps[BOOLEAN]
 
-  implicit object BIGINT extends BIGINT
+  implicit object COUNTER extends CqlTypeOps[COUNTER]
 
-  sealed trait BLOB extends RawCqlType {
-    type JavaType = ByteBuffer
-  }
+  implicit object DATE extends CqlTypeOps[DATE]
 
-  implicit object BLOB extends BLOB
+  implicit object DECIMAL extends CqlTypeOps[DECIMAL]
 
-  sealed trait BOOLEAN extends RawCqlType {
-    type JavaType = Boolean
-  }
+  implicit object DOUBLE extends CqlTypeOps[DOUBLE]
 
-  implicit object BOOLEAN extends BOOLEAN
+  implicit object DURATION extends CqlTypeOps[DURATION]
 
-  sealed trait COUNTER extends RawCqlType {
-    type JavaType = Long
-  }
+  implicit object FLOAT extends CqlTypeOps[FLOAT]
 
-  implicit object COUNTER extends COUNTER
+  implicit object INET extends CqlTypeOps[INET]
 
-  sealed trait DATE extends RawCqlType {
-    type JavaType = Date
-  }
+  implicit object INT extends CqlTypeOps[INT]
 
-  implicit object DATE extends DATE
+  implicit object SMALLINT extends CqlTypeOps[SMALLINT]
 
-  sealed trait DECIMAL extends RawCqlType {
-    type JavaType = BigDecimal
-  }
+  implicit object TEXT extends CqlTypeOps[TEXT]
 
-  implicit object DECIMAL extends DECIMAL
+  implicit object TIME extends CqlTypeOps[TIME]
 
-  sealed trait DOUBLE extends RawCqlType {
-    type JavaType = Double
-  }
+  implicit object TIMESTAMP extends CqlTypeOps[TIMESTAMP]
 
-  implicit object DOUBLE extends DOUBLE
+  implicit object TIMEUUID extends CqlTypeOps[TIMEUUID]
 
-  sealed trait DURATION extends RawCqlType
+  implicit object TINYINT extends CqlTypeOps[TINYINT]
 
-  implicit object DURATION extends DURATION
+  implicit object UUID extends CqlTypeOps[UUID]
 
-  sealed trait FLOAT extends RawCqlType {
-    type JavaType = Float
-  }
+  implicit object VARINT extends CqlTypeOps[VARINT]
 
-  implicit object FLOAT extends FLOAT
+  implicit object ASCII extends CqlTypeOps[ASCII]
 
-  sealed trait INET extends RawCqlType {
-    type JavaType = InetAddress
-  }
-
-  implicit object INET extends INET
-
-  sealed trait INT extends RawCqlType {
-    type JavaType = Int
-  }
-
-  implicit object INT extends INT
-
-  sealed trait SMALLINT extends RawCqlType
-
-  implicit object SMALLINT extends SMALLINT
-
-  sealed trait TEXT extends RawCqlType {
-    type JavaType = String
-  }
-
-  implicit object TEXT extends TEXT
-
-  sealed trait TIME extends RawCqlType {
-    type JavaType = Long
-  }
-
-  implicit object TIME extends TIME
-
-  sealed trait TIMESTAMP extends RawCqlType {
-    type JavaType = Timestamp
-  }
-
-  implicit object TIMESTAMP extends TIMESTAMP
-
-  sealed trait TIMEUUID extends RawCqlType {
-    type JavaType = java.util.UUID
-  }
-
-  implicit object TIMEUUID extends TIMEUUID
-
-  sealed trait TINYINT extends RawCqlType {
-    type JavaType = Int
-  }
-
-  implicit object TINYINT extends TINYINT
-
-  sealed trait UUID extends RawCqlType {
-    type JavaType = java.util.UUID
-  }
-
-  implicit object UUID extends UUID
-
-  sealed trait VARINT extends RawCqlType {
-    type javaType = BigInt
-  }
-
-  implicit object VARINT extends VARINT
+  implicit object BIGINT extends CqlTypeOps[BIGINT]
 
 }

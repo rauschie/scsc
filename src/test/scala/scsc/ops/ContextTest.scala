@@ -3,19 +3,19 @@ package scsc.ops
 import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
-import scsc.Column
-import scsc.CqlType.INT
-import scsc.ops.column.ColumnTypeMapping.KeyColumnTypeMapping
-import shapeless.ops.hlist.{Comapped, Mapper}
-import shapeless.{::, HNil, the}
+import scsc.{TestClustering, TestOptional, TestPartitioning}
+import shapeless.{HNil, the}
 
 @RunWith(classOf[JUnitRunner])
-class ColumnContextTest extends AnyWordSpec {
-  "MapColumns" when {
+class ContextTest extends AnyWordSpec {
+  "Context" when {
+    the[Context[TestPartitioning, HNil, HNil]]
+    the[Context[TestPartitioning, TestClustering, HNil]]
+    the[Context[TestPartitioning, HNil, TestOptional]]
+    the[Context[TestPartitioning, TestClustering, TestOptional]]
     "summoned" should {
       "be available" in {
- //       the[MapColumns[Column.Aux[INT, "Foo"] :: HNil, HNil, HNil]]
-        the[Mapper.Aux[KeyMappingColumn.type, Column.Aux[INT, "Foo"] :: HNil, Column.Aux[Int, "Foo"] :: HNil]]
+        //       the[MapColumns[Column.Aux[INT, "Foo"] :: HNil, HNil, HNil]]
       }
     }
   }

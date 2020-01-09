@@ -5,15 +5,12 @@ import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
 import scsc.Column.Aux
-import scsc.CqlType.{ASCII, BOOLEAN, INT, TEXT}
 import scsc.syntax.BoundStatementOps
-import scsc.{Column, EmbeddedCassandraTestSuite}
+import scsc.EmbeddedCassandraTestSuite
 import shapeless.{::, the, HNil}
 
 @RunWith(classOf[JUnitRunner])
-class SetColumnValuesEmbeddedTestEmbedded extends AnyWordSpec with EmbeddedCassandraTestSuite {
-
-
+class SetColumnValuesEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
 //  implicit val keyTxtCtx: TypeContext.Aux[TEXT, String] = the[TypeContext.Aux[TEXT, String]]
   //  implicit val optTxtCtx:TypeContext.Aux[TEXT, Option[String]] = the[OptionalContext[TEXT]]
   //implicit val keyIntCtx: TypeContext.Aux[INT, Int] = the[TypeContext.Aux[INT, Int]]

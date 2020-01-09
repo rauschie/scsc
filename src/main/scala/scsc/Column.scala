@@ -1,34 +1,15 @@
 package scsc
 
-sealed trait Column {
-  type Underlying
+sealed trait Column[A] {
   type Name <: String
   val name: Name
-  val cqlType: CqlType
 }
 
 object Column {
-  type Aux[U, N <: String] = Column {
-    type Name = N
-    type Underlying = U}
-  type Named[N <: String] = Column {type Name = N}
-  type BackedBy[U] = Column {type Underlying = U}
+  type Aux[A, N <: String] = Column[A] {type Name = N}
 
-  def apply[N <: Singleton with String](cqlT: CqlType, n: N): Column.Aux[Option[cqlT.JavaType], N] = new Column {
-    type Underlying = Option[cqlT.JavaType]
+  def apply[A, N <: Singleton with String](implicit n: ValueOf[N]): Column.Aux[A, N] = new Column[A] {
     type Name = N
-    val name: Name = n
-    val cqlType: CqlType= cqlT
+    val name: Name = n.value
   }
-
-  def key[N <: Singleton with String](cqlT: CqlType, n: N): Column.Aux[cqlT.JavaType, N] = new Column {
-    type Underlying = cqlT.JavaType
-    type Name = N
-    val name: Name = n
-    val cqlType: CqlType = cqlT
-  }
-
 }
-
-
-

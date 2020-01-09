@@ -1,8 +1,7 @@
-package scsc.ops.columns
+package scsc.ops.row
 
 import com.datastax.oss.driver.api.core.cql.Row
-import scsc.Column
-import scsc.ops.column.GetRowValue
+import scsc.{Column, CqlType}
 import shapeless.{::, HList, HNil}
 
 trait GetRecord[L <: HList] {
@@ -11,26 +10,25 @@ trait GetRecord[L <: HList] {
   def apply(columns: L, row: Row): Out
 }
 
-object GetRecord extends LowPriorityGetRecord {
+object GetRecord {
 
   type Aux[L <: HList, O] = GetRecord[L] {type Out = O}
 
   def apply[L <: HList](implicit getRecord: GetRecord[L]): GetRecord[L] = getRecord
 
-  implicit def getNonEmptyRecord[H <: Column, T <: HList](implicit getCell: GetRowValue[H],
-                                                          getRecord: GetRecord[T]): Aux[H :: T, getCell.V :: getRecord.Out] =
-    new GetRecord[H :: T] {
-      type Out = getCell.V :: getRecord.Out
+/*  implicit def getNonEmptyRecord[H <: Column.Aux[N, C],
+    T <: HList,
+    N <: Singleton with String,
+    C<:CqlType,
+    M: Get](implicit ctx: TypeContext.Aux[C, M],
+            name: ValueOf[N],
+            getRecord: GetRecord[T]): Aux[H :: T, M :: getRecord.Out] = new GetRecord[H :: T] {
+    type Out = ctx.MappedTo :: getRecord.Out
 
-      def apply(columns: H :: T, row: Row): getCell.V :: getRecord.Out = getCell(columns.head, row) :: getRecord(columns.tail, row)
-    }
-}
+    def apply(columns: H :: T, row: Row): ctx.MappedTo :: getRecord.Out = row.getValueIn(columns.head) :: getRecord(columns.tail, row)
+  }*/
 
-trait LowPriorityGetRecord {
-  /*TODO
-this probably isnt necessary
- */
-  implicit def getEmptyRecord: GetRecord.Aux[HNil, HNil] =
+  implicit def getEmptyRecord: GetRecord[HNil] =
     new GetRecord[HNil] {
       type Out = HNil
 

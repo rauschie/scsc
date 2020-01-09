@@ -1,9 +1,9 @@
-package scsc.ops
+package scsc.ops.boundstatement
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import com.datastax.oss.driver.api.core.cql.BoundStatement
 
-trait Setter[A] {
+sealed trait Setter[A] {
   def setValueTo(boundStatement: BoundStatement, columnId: CqlIdentifier, v: A): BoundStatement
 }
 
@@ -33,4 +33,10 @@ object Setter {
     def setValueTo(record: BoundStatement, columnId: CqlIdentifier, v: Float): BoundStatement = record.setFloat(columnId, v)
   }
 
+  implicit def setOption[A](implicit setter: Setter[A]): Setter[Option[A]] = new Setter[Option[A]] {
+    def setValueTo(boundStatement: BoundStatement, columnId: CqlIdentifier, v: Option[A]): BoundStatement = v match {
+      case Some(value) => setter.setValueTo(boundStatement, columnId, value)
+      case None => boundStatement
+    }
+  }
 }

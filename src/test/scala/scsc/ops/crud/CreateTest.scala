@@ -1,4 +1,4 @@
-package scsc.crud
+package scsc.ops.crud
 
 import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
@@ -24,8 +24,7 @@ class CreateTest extends AnyWordSpec {
           type TestPartitioning = Column.Aux[TEXT, "foo"] :: Column.Aux[INT, "bar"] :: HNil
           type TestClustering = Column.Aux[DOUBLE, "baz"] :: HNil
           type TestOptional = Column.Aux[BOOLEAN, "qux"] :: HNil
-          the[Create[TestPartitioning, TestClustering, TestOptional]]
-            .apply("a", ColumnFamily("b", (partitioningTestColumns, clusteringTestColumns), optionalTestColumns)).getQuery
+          the[Create[TestPartitioning, TestClustering, TestOptional]].apply("a","b").getQuery
         }
       }
     }

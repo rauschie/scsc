@@ -1,26 +1,40 @@
 plugins {
     id 'scala'
 }
+
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = ["-Xlog-implicits"]
 }
+
 dependencies {
-    def scalaversion = "2.13"
-    def shapelessversion = "2.3.3"
-    def cassandradriverversion = "4.3.0"
-    def scalatestversion = "3.1.0"
+    def scalaVersion = "2.13"
+    def shapelessVersion = "2.3.3"
+    def cassandraDriverVersion = "4.3.1"
+    def scalaTestVersion = "3.1.0"
     def jUnitVersion = "5.2"
 
-    implementation "org.scala-lang:scala-library:${scalaversion}+"
-    implementation "com.chuusai:shapeless_${scalaversion}:${shapelessversion}+"
-    implementation "com.datastax.oss:java-driver-core:${cassandradriverversion}+"
-    testImplementation "org.scalatest:scalatest_${scalaversion}:${scalatestversion}+"
-    testCompile "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}+"
-    testImplementation "org.scalatestplus:scalatestplus-junit_${scalaversion}:1.0.0+"
-    testCompile "org.cassandraunit:cassandra-unit:3.11.2.0"
-
+    implementation "org.scala-lang:scala-library:$scalaVersion+"
+    implementation "com.chuusai:shapeless_$scalaVersion:$shapelessVersion+"
+    implementation "com.datastax.oss:java-driver-core:$cassandraDriverVersion+"
+    implementation "com.datastax.oss:java-driver-query-builder:$cassandraDriverVersion+"
+    testCompile "org.junit.jupiter:junit-jupiter-api:$jUnitVersion+"
+    testCompile "org.cassandraunit:cassandra-unit:3.11.2.0+"
+    testImplementation "org.scalatest:scalatest_$scalaVersion:$scalaTestVersion+"
+    testImplementation "org.scalatestplus:scalatestplus-junit_$scalaVersion:1.0.0+"
 }
 
 repositories {
     jcenter()
+}
+test {
+    filter {
+        excludeTestsMatching '*EmbeddedTest'
+    }
+}
+task slowTest(type: Test) {
+    test {
+        filter {
+
+        }
+    }
 }

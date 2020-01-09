@@ -1,42 +1,26 @@
 package scsc
 
-import com.datastax.driver.core.Session
-import com.datastax.oss.driver.api.core.session.Session
-import scsc.cql.{Create, InsertInto}
-import scsc.ops.columnfamily.{Columns, KeyColumns}
-import scsc.ops.columns.BoundStatementSetter
 import shapeless.HList
-import shapeless.ops.hlist.Filter
+
+import scala.language.implicitConversions
 
 package object syntax {
 
-  abstract class ColumnFamilyOps[P <: HList, C <: HList, O <: HList, Key<:HList, Record<:HList](val table: ColumnFamily.Aux[P, O, O, Key, Record]) {
-    def columns(implicit columns: Columns[P, O, O]): columns.Out = columns(table)
+  import com.datastax.oss.driver.api.core.cql.BoundStatement
+  import scsc.ops.Columns
 
-    def keyColumns(implicit keyColumns: KeyColumns[P, O]): keyColumns.Out = keyColumns(table)
+  implicit class BoundStatementOps(val boundStatement: BoundStatement) extends AnyVal {
 
-    def create(implicit session: Session,
-               create: Create[P, O, O]): Unit = {
-      session.execute(create.query(table))
-    }
+    import com.datastax.oss.driver.api.core.CqlIdentifier
+    import scsc.ops.hlist.SetColumnValues.Aux
+    import scsc.ops.boundstatement.Setter
 
-    def put[Cols <: HList, R <: HList](record: R)(implicit session: Session,
-                                                  columns: Columns.Aux[P, O, O, Cols],
-                                                  insertInto: InsertInto[P, O, O],
-                                                  recordsetter: BoundStatementSetter.Aux[Cols, R]): Unit = {
-      val stmt = session.prepare(insertInto.query(table)).bind()
-      val set = recordsetter.apply(columns(table))
-      session.execute(set(record, stmt))
-    }
+    def setToRecord[L <: HList, R <: HList](record: R)(implicit setToRecord: L Aux R): BoundStatement = setToRecord(
+      boundStatement, record)
 
-    def get[ColNames <: HList](key: Key, columns: ColNames)(implicit session: Session,
-
-    ) = ???
-
+    def set[N <: Singleton with String, A](name: String, v: A)(implicit setter: Setter[A]): BoundStatement = setter.setValueTo(boundStatement, CqlIdentifier.fromCql(name), v)
   }
 
-  implicit class CqlTypeOps[C <: CqlType](val cqlType: C) {
-    def apply[N <: Singleton with String](name: N): ColumnBlueprint.Aux[cqlType.JavaType, N] = ColumnBlueprint[cqlType.JavaType, N](cqlType, name)
-  }
-  Filter
+  implicit def asColumns[L](columns: L)(implicit ops: Columns[L]): Columns[L] = ops
+
 }

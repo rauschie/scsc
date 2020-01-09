@@ -9,7 +9,7 @@ import scsc.EmbeddedCassandraTestSuite
 import shapeless.the
 
 @RunWith(classOf[JUnitRunner])
-class SetterEmbeddedTestEmbedded extends AnyWordSpec with EmbeddedCassandraTestSuite {
+class SetterEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
   "a Setter" when {
     "implemented" must {
       "be implicitly available" in {

@@ -3,16 +3,15 @@ typesafe CRUD : KV Store
 columnar access
 moeglichst simple table creation
 
-create: Table => Unit
-put: Table X Row => Unit
+create: Table => Unit //P0, C0, O0
+put: Table X Record => Unit  //AllCols, Record
 insert into table val ***
-put: Table X Iterable[Row] => Unit
+put: Table X Iterable[Record] => Unit
 
-get: Table X Key => Row
+get: Table X Key => Record
 table.get(key:K)
-get: Table X Iterable[Key] => Iterable[Row]
+get: Table X Iterable[Key] => Iterable[Record]
 get: Table X Column =>
-def get[T<: Singleton with String](implicit valueof:valueOf[T], )
 get: Table X Key X Column => Seq[Column.T]
 get: Table X Key X Key X Column => Seq[Column.T]
 

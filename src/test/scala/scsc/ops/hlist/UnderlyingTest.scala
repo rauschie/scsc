@@ -7,15 +7,15 @@ import scsc.Column
 import shapeless.{::, HNil, the}
 
 @RunWith(classOf[JUnitRunner])
-class ExtractUnderlyingTest extends AnyWordSpec {
+class UnderlyingTest extends AnyWordSpec {
 
   "ExtractUnderlying" when {
-    val extractHNil = the[ExtractUnderlying[HNil]]
-    val extractHCons = the[ExtractUnderlying[Column.Aux[String, "foo"] :: Column.Aux[Int, "bar"] :: HNil]]
+    val extractHNil = the[Underlying[HNil]]
+    val extractHCons = the[Underlying[Column.Aux[String, "foo"] :: Column.Aux[Option[Int], "bar"] :: HNil]]
     "summoned" must {
       "have the right Out type" in {
         the[extractHNil.Out <:< HNil]
-        the[extractHCons.Out <:< (String :: Int :: HNil)]
+        the[extractHCons.Out <:< (String :: Option[Int] :: HNil)]
       }
     }
   }

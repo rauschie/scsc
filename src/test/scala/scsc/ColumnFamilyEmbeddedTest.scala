@@ -1,10 +1,11 @@
 package scsc
 
 import org.junit.runner.RunWith
+import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class ColumnFamilyEmbeddedTest extends CassandraTestSuite {
+class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
 
   import scsc.Column.Aux
   import scsc.CqlType._

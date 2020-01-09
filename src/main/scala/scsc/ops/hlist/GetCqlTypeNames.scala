@@ -2,24 +2,24 @@ package scsc.ops.hlist
 
 import shapeless.HList
 
-sealed trait GetTypeNames[L <: HList] {
+sealed trait GetCqlTypeNames[L] {
   def apply(): List[String]
 }
 
-object GetTypeNames {
+object GetCqlTypeNames {
 
-  import scsc.ops.cqltype.Name
-  import scsc.{Column, CqlType}
-  import scsc.CqlType.CqlTypeOps
+  import scsc.ops.cqltype.GetCqlTypeName
+  import scsc.Column
   import shapeless.HNil
 
-  implicit def getHConsTypeNames[A <: CqlType, H, T <: HList](implicit ev: H <:< Column[A],
-                                                              getName: Name[A],
-                                                              getTailTypeNames: GetTypeNames[T]): GetTypeNames[shapeless.::[H, T]] = new GetTypeNames[shapeless.::[H, T]] {
-    def apply(): List[String] = getName() :: getTailTypeNames()
+  implicit def getHConsTypeNames[A, H, T<:HList](implicit ev: H <:< Column[A],
+                                                              getName: GetCqlTypeName[A],
+                                                              getTailNames: GetCqlTypeNames[T]): GetCqlTypeNames[shapeless.::[H, T]] = new GetCqlTypeNames[shapeless.::[H, T]] {
+    def apply(): List[String] = getName() :: getTailNames()
   }
 
-  implicit val getHNilTypeName: GetTypeNames[HNil] = new GetTypeNames[HNil] {
+  implicit object getHNilTypeName extends GetCqlTypeNames[HNil] {
     def apply(): List[String] = Nil
   }
+
 }
