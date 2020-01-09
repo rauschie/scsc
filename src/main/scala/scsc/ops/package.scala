@@ -17,12 +17,14 @@ package object ops {
   }
 
   object Columns {
-    type Aux[L, U <: HList] = Columns[L] {type Underlying = U}
+    type Aux[L, U <: HList] = Columns[L] { type Underlying = U }
 
     def apply[A](implicit columns: Columns[A]): Columns[A] = columns
 
-    implicit def columns[L](implicit getNames: GetNames[L],
-                            ev: Underlying[L]): Aux[L, ev.Out] = new Columns[L] {
+    implicit def columns[L](
+        implicit getNames: GetNames[L],
+        ev: Underlying[L]
+    ): Aux[L, ev.Out] = new Columns[L] {
       type Underlying = ev.Out
       lazy val names: List[String] = getNames()
     }
@@ -30,10 +32,12 @@ package object ops {
 
   object CqlColumns {
 
-    implicit def hConsCqlColumns[L, K <: HList, O <: HList](implicit ev: Columns[L],
-                                                            getCTNs: GetCqlTypeNames[L],
-                                                            evK: Columns[K],
-                                                            evO: Columns[O]): CqlColumns[L] = new CqlColumns[L] {
+    implicit def hConsCqlColumns[L, K <: HList, O <: HList](
+        implicit ev: Columns[L],
+        getCTNs: GetCqlTypeNames[L],
+        evK: Columns[K],
+        evO: Columns[O]
+    ): CqlColumns[L] = new CqlColumns[L] {
 
       def getCqlTypeNames: List[String] = getCTNs()
 

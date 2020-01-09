@@ -3,7 +3,7 @@ plugins {
 }
 
 tasks.withType(ScalaCompile) {
-    scalaCompileOptions.additionalParameters = ["-Xlog-implicits"]
+  //  scalaCompileOptions.additionalParameters = ["-Vimplicits"]
 }
 
 dependencies {
@@ -17,8 +17,8 @@ dependencies {
     implementation "com.chuusai:shapeless_$scalaVersion:$shapelessVersion+"
     implementation "com.datastax.oss:java-driver-core:$cassandraDriverVersion+"
     implementation "com.datastax.oss:java-driver-query-builder:$cassandraDriverVersion+"
-    testCompile "org.junit.jupiter:junit-jupiter-api:$jUnitVersion+"
-    testCompile "org.cassandraunit:cassandra-unit:3.11.2.0+"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$jUnitVersion+"
+    testImplementation "org.cassandraunit:cassandra-unit:3.11.2.0+"
     testImplementation "org.scalatest:scalatest_$scalaVersion:$scalaTestVersion+"
     testImplementation "org.scalatestplus:scalatestplus-junit_$scalaVersion:1.0.0+"
 }

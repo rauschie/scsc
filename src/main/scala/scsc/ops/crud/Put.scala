@@ -27,11 +27,13 @@ object Put {
     type Record = R
   }
 
-  implicit def put[K <: HList, O <: HList, C <: HList, R <: HList](implicit keyColumns: Columns[K],
-                                                                   optionalColumns: Columns[O],
-                                                                   ev: Prepend.Aux[K, O, C],
-                                                                   ev1: C Extract R,
-                                                                   ev2: SetColumnValues.Aux[C, R]): Aux[K, O, R] = new Put[K, O] {
+  implicit def put[K <: HList, O <: HList, C <: HList, R <: HList](
+      implicit keyColumns: Columns[K],
+      optionalColumns: Columns[O],
+      ev: Prepend.Aux[K, O, C],
+      ev1: C Extract R,
+      ev2: SetColumnValues.Aux[C, R]
+  ): Aux[K, O, R] = new Put[K, O] {
 
     import com.datastax.oss.driver.api.core.cql.BoundStatement
 
@@ -43,12 +45,14 @@ object Put {
         s"VALUES (${columns map (_ => "?") mkString ", "})"
     }
 
-    def prepare(tableName: String): SimpleStatement = SimpleStatement.newInstance(getQuery(tableName))
+    def prepare(tableName: String): SimpleStatement =
+      SimpleStatement.newInstance(getQuery(tableName))
 
-    val put: (R, CqlSession) => BoundStatement = (record: Record, session: CqlSession) => {
-      import scsc.syntax.BoundStatementOps
-      val b: BoundStatement = ???
-      b.setToRecord(record)
-    }
+    val put: (R, CqlSession) => BoundStatement =
+      (record: Record, session: CqlSession) => {
+        import scsc.syntax.BoundStatementOps
+        val b: BoundStatement = ???
+        b.setToRecord(record)
+      }
   }
 }
