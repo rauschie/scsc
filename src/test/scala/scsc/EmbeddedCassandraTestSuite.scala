@@ -1,0 +1,5 @@
+package scsc
+
+class EmbeddedCassandraTestSuite {
+
+}
