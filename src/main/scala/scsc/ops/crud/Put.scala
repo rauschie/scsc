@@ -1,16 +1,20 @@
 package scsc.ops.crud
 
 import com.datastax.oss.driver.api.core.CqlSession
-import com.datastax.oss.driver.api.core.cql.PreparedStatement
 import shapeless.HList
+
+import com.datastax.oss.driver.api.core.cql.SimpleStatement
 
 sealed trait Put[K, O] {
 
+  import com.datastax.oss.driver.api.core.cql.BoundStatement
+
   type Record <: HList
+  val put: (Record, CqlSession) => BoundStatement
 
   def getQuery(tableName: String): String
 
-  def prepare(tableName: String, session: CqlSession): PreparedStatement
+  def prepare(tableName: String): SimpleStatement
 }
 
 object Put {
@@ -28,6 +32,9 @@ object Put {
                                                                    ev: Prepend.Aux[K, O, C],
                                                                    ev1: C Extract R,
                                                                    ev2: SetColumnValues.Aux[C, R]): Aux[K, O, R] = new Put[K, O] {
+
+    import com.datastax.oss.driver.api.core.cql.BoundStatement
+
     type Record = R
 
     def getQuery(tableName: String): String = {
@@ -36,6 +43,12 @@ object Put {
         s"VALUES (${columns map (_ => "?") mkString ", "})"
     }
 
-    def prepare(tableName: String, session: CqlSession): PreparedStatement = session.prepare(getQuery(tableName))
+    def prepare(tableName: String): SimpleStatement = SimpleStatement.newInstance(getQuery(tableName))
+
+    val put: (R, CqlSession) => BoundStatement = (record: Record, session: CqlSession) => {
+      import scsc.syntax.BoundStatementOps
+      val b: BoundStatement = ???
+      b.setToRecord(record)
+    }
   }
 }
