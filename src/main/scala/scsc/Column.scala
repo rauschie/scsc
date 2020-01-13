@@ -6,9 +6,11 @@ sealed trait Column[A] {
 }
 
 object Column {
-  type Aux[A, N <: String] = Column[A] {type Name = N}
+  type Aux[A, N <: String] = Column[A] { type Name = N }
 
-  def apply[A, N <: Singleton with String](implicit n: ValueOf[N]): Column.Aux[A, N] = new Column[A] {
+  def apply[A, N <: Singleton with String](
+      implicit n: ValueOf[N]
+  ): Column.Aux[A, N] = new Column[A] {
     type Name = N
     val name: Name = n.value
   }

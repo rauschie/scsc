@@ -19,46 +19,32 @@ object Context {
 
   import scsc.ops.crud.Put
 
-  type Aux[
-      P0 <: HList,
-      C0 <: HList,
-      O0 <: HList,
-      KC <: HList,
-      K <: HList,
-      R <: HList
-  ] = Context[P0, C0, O0] {
-    type KeyColumns = KC
-    type Key = K
-    type Record = R
-  }
+  type Aux[P0 <: HList, C0 <: HList, O0 <: HList, KC <: HList, K <: HList, R <: HList] =
+    Context[P0, C0, O0] {
+      type KeyColumns = KC
+      type Key = K
+      type Record = R
+    }
 
-  implicit def context[
-      P0 <: HList,
-      C0 <: HList,
-      O0 <: HList,
-      K <: HList,
-      O <: HList,
-      KeyFields <: HList,
-      OptionalFields <: HList
-  ](
+  implicit def context[P0 <: HList,
+                       C0 <: HList,
+                       O0 <: HList,
+                       K <: HList,
+                       O <: HList,
+                       KeyFields <: HList,
+                       OptionalFields <: HList](
       implicit describeKey: KeyDescriptor[P0, C0],
       describeRecord: RecordDescriptor[P0, C0, O0],
       c: Create[P0, C0, O0],
       p: Put[K, O]
-  ): Aux[
-    P0,
-    C0,
-    O0,
-    describeKey.Columns,
-    describeKey.Key,
-    describeRecord.Record
-  ] = new Context[P0, C0, O0] {
-    type KeyColumns = describeKey.Columns
-    type Key = describeKey.Key
-    type Record = describeRecord.Record
-    val create: Create[P0, C0, O0] = c
-    //  val put: Put[K, O] = p
-  }
+  ): Aux[P0, C0, O0, describeKey.Columns, describeKey.Key, describeRecord.Record] =
+    new Context[P0, C0, O0] {
+      type KeyColumns = describeKey.Columns
+      type Key = describeKey.Key
+      type Record = describeRecord.Record
+      val create: Create[P0, C0, O0] = c
+      //  val put: Put[K, O] = p
+    }
 
   sealed trait KeyDescriptor[P0, C0] {
     type Columns <: HList
@@ -71,6 +57,7 @@ object Context {
   }
 
   object KeyDescriptor {
+
     type Aux[P0, C0, KC <: HList, K <: HList] = KeyDescriptor[P0, C0] {
       type KeyColumns = KC
       type Key = K
@@ -80,14 +67,7 @@ object Context {
     import shapeless.ops.hlist.Prepend
     import shapeless.HList
 
-    implicit def keyDescriptor[
-        P0,
-        C0,
-        P <: HList,
-        C <: HList,
-        UP <: HList,
-        UC <: HList
-    ](
+    implicit def keyDescriptor[P0, C0, P <: HList, C <: HList, UP <: HList, UC <: HList](
         implicit ev1: P0 ToKey P,
         ev2: C0 ToKey C,
         ev3: P Extract UP,
@@ -111,19 +91,11 @@ object Context {
       type Record = R
     }
 
-    implicit def recordDescriptor[
-        P0,
-        C0,
-        KC <: HList,
-        K <: HList,
-        O0,
-        O <: HList,
-        UO <: HList
-    ](
+    implicit def recordDescriptor[P0, C0, KC <: HList, K <: HList, O0, O <: HList, UO <: HList](
         implicit key: KeyDescriptor.Aux[P0, C0, KC, K],
         ev: O0 ToOptional O,
         ev1: O Extract UO,
-        columnsPrepend: KC Prepend O,
+        columnsPrekend: KC Prepend O,
         recordPrepend: K Prepend UO
     ): Aux[P0, C0, O0, columnsPrepend.Out, recordPrepend.Out] =
       new RecordDescriptor[P0, C0, O0] {
@@ -131,5 +103,4 @@ object Context {
         type Record = recordPrepend.Out
       }
   }
-
 }

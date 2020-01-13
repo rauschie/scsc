@@ -25,12 +25,13 @@ object ColumnFamily {
     type Record = R
   }
 
-  def apply[P0 <: HList](n: String, p0: P0)(implicit ctx: Context[P0, HNil, HNil]): Aux[ctx.Key, ctx.Record] = new ColumnFamily {
+  def apply[P0 <: HList](n: String, p0: P0)( implicit ctx: Context[P0, HNil, HNil] ): Aux[ctx.Key, ctx.Record] = new ColumnFamily {
     type Key = ctx.Key
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpaceName: String)(implicit session: CqlSession): Unit = session.execute(ctx.create(keySpaceName, name))
+    def create(keySpaceName: String)(implicit session: CqlSession): Unit =
+      session.execute(ctx.create(keySpaceName, name))
 
   }
 
@@ -42,24 +43,31 @@ object ColumnFamily {
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpaceName: String)(implicit session: CqlSession): Unit = session.execute(ctx.create(keySpaceName, name))
-  }
-
-  def apply[P0 <: HList, C0 <: HList, O0 <: HList](n: String, keyCols: (P0, C0))(implicit ctx: Context[P0, C0, HNil]): Aux[ctx.Key, ctx.Record] = new ColumnFamily {
-    type Key = ctx.Key
-    type Record = ctx.Record
-    val name: String = n
-
-    def create(keySpaceName: String)(implicit session: CqlSession): Unit = session.execute(ctx.create(keySpaceName, name))
+    def create(keySpaceName: String)(implicit session: CqlSession): Unit =
+      session.execute(ctx.create(keySpaceName, name))
   }
 
   def apply[P0 <: HList, C0 <: HList, O0 <: HList](n: String,
-                                                   keyCols: (P0, C0),
-                                                   optionalCols: O0)(implicit ctx: Context[P0, C0, O0]): Aux[ctx.Key, ctx.Record] = new ColumnFamily {
+                                                   keyCols: (P0, C0))(implicit ctx: Context[P0, C0, HNil]): Aux[ctx.Key, ctx.Record] = new ColumnFamily {
     type Key = ctx.Key
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpaceName: String)(implicit session: CqlSession): Unit = session.execute(ctx.create(keySpaceName, name))
+    def create(keySpaceName: String)(implicit session: CqlSession): Unit =
+      session.execute(ctx.create(keySpaceName, name))
   }
+
+  def apply[P0 <: HList, C0 <: HList, O0 <: HList](
+      n: String,
+      keyCols: (P0, C0),
+      optionalCols: O0
+  )(implicit ctx: Context[P0, C0, O0]): Aux[ctx.Key, ctx.Record] =
+    new ColumnFamily {
+      type Key = ctx.Key
+      type Record = ctx.Record
+      val name: String = n
+
+      def create(keySpaceName: String)(implicit session: CqlSession): Unit =
+        session.execute(ctx.create(keySpaceName, name))
+    }
 }

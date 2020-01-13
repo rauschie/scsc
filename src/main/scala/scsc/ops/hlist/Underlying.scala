@@ -8,10 +8,12 @@ sealed trait Underlying[L] {
 }
 
 object Underlying {
-  type Aux[L, O0 <: HList] = Underlying[L] {type Out = O0}
+  type Aux[L, O0 <: HList] = Underlying[L] { type Out = O0 }
 
-  implicit def hConsUnderlying[A, H, T <: HList](implicit ev: H <:< Column[A],
-                                                 extractTail: Underlying[T]): Aux[H :: T, A :: extractTail.Out] = new Underlying[H :: T] {
+  implicit def hConsUnderlying[A, H, T <: HList](
+      implicit ev: H <:< Column[A],
+      extractTail: Underlying[T]
+  ): Aux[H :: T, A :: extractTail.Out] = new Underlying[H :: T] {
     type Out = A :: extractTail.Out
   }
 

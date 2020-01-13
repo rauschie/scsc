@@ -13,7 +13,7 @@ sealed trait Create[P, C, O] {
       age int,
       id UUID,
       PRIMARY KEY ((lastname, firstname), age) );
-  */
+   */
   def apply(keySpaceName: String, tableName: String): SimpleStatement
 }
 
@@ -21,9 +21,11 @@ object Create {
 
   import scsc.ops.CqlColumns
 
-  implicit def create[P, C, O](implicit part: CqlColumns[P],
-                               clust: CqlColumns[C],
-                               opt: CqlColumns[O]): Create[P, C, O] = new Create[P, C, O] {
+  implicit def create[P, C, O](
+      implicit part: CqlColumns[P],
+      clust: CqlColumns[C],
+      opt: CqlColumns[O]
+  ): Create[P, C, O] = new Create[P, C, O] {
 
     def apply(keySpaceName: String, tableName: String): SimpleStatement = {
       import com.datastax.oss.driver.api.core.cql.SimpleStatement
@@ -33,11 +35,13 @@ object Create {
       val typeNames = part.getCqlTypeNames ::: clust.getCqlTypeNames ::: opt.getCqlTypeNames
       SimpleStatement.newInstance(
         s"CREATE TABLE $keySpaceName.$tableName (" + CR +
-          names.zip(typeNames)
-               .map { case (colName, colType) => s"$colName $colType," }
-               .mkString(CR) +
-          CR + s"PRIMARY KEY ((${partitioningNames.mkString(", ")}), ${clusteringNames.mkString(", ")}))"
-        )
+          names
+            .zip(typeNames)
+            .map { case (colName, colType) => s"$colName $colType," }
+            .mkString(CR) +
+          CR + s"PRIMARY KEY ((${partitioningNames
+          .mkString(", ")}), ${clusteringNames.mkString(", ")}))"
+      )
     }
   }
 }

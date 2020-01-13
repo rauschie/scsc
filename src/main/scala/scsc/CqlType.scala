@@ -1,11 +1,8 @@
 package scsc
 
-
 import scsc.ops.cqltype.GetCqlTypeName
 
-
 sealed trait CqlType
-
 
 object CqlType {
 
@@ -52,7 +49,8 @@ object CqlType {
   sealed trait CqlTypeOps[C <: CqlType] {
     def getName(implicit toString: GetCqlTypeName[C]): String = toString()
 
-    def apply[N <: Singleton with String : ValueOf]: Column.Aux[C, N] = Column[C, N]
+    def apply[N <: Singleton with String: ValueOf]: Column.Aux[C, N] =
+      Column[C, N]
   }
 
   implicit object BLOB extends CqlTypeOps[BLOB]

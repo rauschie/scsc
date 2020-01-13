@@ -10,9 +10,11 @@ object GetNames {
 
   import scsc.Column
 
-  implicit def getHConsNames[N <: Singleton with String, H, T <: HList](implicit ev: H <:< Column.Aux[_, N],
-                                                                        name: ValueOf[N],
-                                                                        getNames: GetNames[T]): GetNames[shapeless.::[H, T]] = new GetNames[shapeless.::[H, T]] {
+  implicit def getHConsNames[N <: Singleton with String, H, T <: HList](
+      implicit ev: H <:< Column.Aux[_, N],
+      name: ValueOf[N],
+      getNames: GetNames[T]
+  ): GetNames[shapeless.::[H, T]] = new GetNames[shapeless.::[H, T]] {
     def apply(): List[String] = name.value :: getNames()
   }
 
