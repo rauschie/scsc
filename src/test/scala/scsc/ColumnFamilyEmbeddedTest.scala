@@ -8,6 +8,7 @@ import org.scalatestplus.junit.JUnitRunner
 class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
 
   import scsc.Column.Aux
+  import scsc.KeySpace
   import scsc.CqlType._
   import shapeless.{::, HNil}
 
@@ -19,7 +20,9 @@ class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSui
     val foo = ColumnFamily("foo", TEXT["foo"] :: INT["bar"] :: HNil)
     val bar = ColumnFamily("bar", TEXT["foo"] :: INT["bar"] :: HNil, BOOLEAN["qux"] :: HNil)
     val baz = ColumnFamily("baz", (TEXT["foo"] :: INT["bar"] :: HNil, DOUBLE["baz"] :: HNil))
-    val qux = ColumnFamily("qux", (TEXT["foo"] :: INT["bar"] :: HNil, DOUBLE["baz"] :: HNil), BOOLEAN["qux"] :: HNil)
+    val qux = ColumnFamily("qux",
+                           (TEXT["foo"] :: INT["bar"] :: HNil, DOUBLE["baz"] :: HNil),
+                           BOOLEAN["qux"] :: HNil)
 
     "instantiated" must {
       "have the right types" in {
@@ -36,7 +39,7 @@ class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSui
       }
 
       "be able to create itself in a keyspace" in withKeySpace("test") { implicit session =>
-        qux.create("test")
+        qux.create(KeySpace("test"))
       }
     }
   }

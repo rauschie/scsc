@@ -95,7 +95,7 @@ object Context {
         implicit key: KeyDescriptor.Aux[P0, C0, KC, K],
         ev: O0 ToOptional O,
         ev1: O Extract UO,
-        columnsPrekend: KC Prepend O,
+        columnsPrepend: KC Prepend O,
         recordPrepend: K Prepend UO
     ): Aux[P0, C0, O0, columnsPrepend.Out, recordPrepend.Out] =
       new RecordDescriptor[P0, C0, O0] {
