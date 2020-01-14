@@ -39,7 +39,7 @@ class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSui
       }
 
       "be able to create itself in a keyspace" in withKeySpace("test") { implicit session =>
-        qux.create(KeySpace("test"))
+        qux.createInKeySpace(KeySpace("test"))
       }
     }
   }

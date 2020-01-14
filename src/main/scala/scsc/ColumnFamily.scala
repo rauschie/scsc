@@ -1,24 +1,20 @@
 package scsc
 
-import shapeless.{HList, HNil}
-
 import com.datastax.oss.driver.api.core.CqlSession
-import scsc.ops.hlist.SetColumnValues
-import scsc.KeySpace
+import shapeless.{HList, HNil}
 sealed trait ColumnFamily {
 
   type Key <: HList
   type Record <: HList
   val name: String
 
-  def create(keySpace: KeySpace)(implicit session: CqlSession): Unit
+  def createInKeySpace(keySpace: KeySpace)(implicit session: CqlSession): Unit
 
 }
 
 object ColumnFamily {
 
   import scsc.ops.Context
-  import syntax.BoundStatementOps
 
   type Aux[K <: HList, R <: HList] = ColumnFamily {
     type Key = K
@@ -32,7 +28,7 @@ object ColumnFamily {
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpace: KeySpace)(implicit session: CqlSession): Unit =
+    def createInKeySpace(keySpace: KeySpace)(implicit session: CqlSession): Unit =
       session.execute(ctx.create(keySpace.name, name))
 
   }
@@ -45,7 +41,7 @@ object ColumnFamily {
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpace: KeySpace)(implicit session: CqlSession): Unit =
+    def createInKeySpace(keySpace: KeySpace)(implicit session: CqlSession): Unit =
       session.execute(ctx.create(keySpace.name, name))
   }
 
@@ -56,7 +52,7 @@ object ColumnFamily {
     type Record = ctx.Record
     val name: String = n
 
-    def create(keySpace: KeySpace)(implicit session: CqlSession): Unit =
+    def createInKeySpace(keySpace: KeySpace)(implicit session: CqlSession): Unit =
       session.execute(ctx.create(keySpace.name, name))
   }
 
@@ -70,7 +66,7 @@ object ColumnFamily {
       type Record = ctx.Record
       val name: String = n
 
-      def create(keySpace: KeySpace)(implicit session: CqlSession): Unit =
+      def createInKeySpace(keySpace: KeySpace)(implicit session: CqlSession): Unit =
         session.execute(ctx.create(keySpace.name, name))
     }
 }
