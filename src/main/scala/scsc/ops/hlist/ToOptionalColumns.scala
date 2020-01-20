@@ -16,11 +16,11 @@ object ToOptionalColumns {
 
   type Aux[L0, O <: HList] = ToOptionalColumns[L0] { type Out = O }
 
-  implicit def toHConsColumns[C <: CqlType, N <: Singleton with String, T <: HList](
-      implicit mapping: CqlTypeMapping[C],
+  implicit def toHConsColumns[A <: CqlType, N <: Singleton with String, T <: HList](
+      implicit mapping: CqlTypeMapping[A],
       toTailColumns: ToOptionalColumns[T]
-  ): Aux[Column[N, C] :: T, Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out] =
-    new ToOptionalColumns[Column[N, C] :: T] {
+  ): Aux[Column[N, A] :: T, Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out] =
+    new ToOptionalColumns[Column[N, A] :: T] {
       type Out = Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out
 
       def apply(): Out = Column[N, Option[mapping.MappedTo]] :: toTailColumns()
