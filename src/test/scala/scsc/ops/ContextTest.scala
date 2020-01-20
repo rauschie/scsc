@@ -9,13 +9,15 @@ import shapeless.{HNil, the}
 @RunWith(classOf[JUnitRunner])
 class ContextTest extends AnyWordSpec {
   "Context" when {
-    the[Context[TestPartitioning, HNil, HNil]]
-    the[Context[TestPartitioning, TestClustering, HNil]]
-    the[Context[TestPartitioning, HNil, TestOptional]]
-    the[Context[TestPartitioning, TestClustering, TestOptional]]
+    val pCtx = the[Context[TestPartitioning, HNil, HNil]]
+    val ptCtx = the[Context[TestPartitioning, TestClustering, HNil]]
+    val poCtx = the[Context[TestPartitioning, HNil, TestOptional]]
+    val pcoCtx = the[Context[TestPartitioning, TestClustering, TestOptional]]
     "summoned" should {
-      "be available" in {
-        //       the[MapColumns[Column.Aux[INT, "Foo"] :: HNil, HNil, HNil]]
+      "have the right types" in {
+        import scsc.{TestKey, TestRecord}
+        the[pcoCtx.Key<:<TestKey]
+        the[pcoCtx.Record<:<TestRecord]
       }
     }
   }

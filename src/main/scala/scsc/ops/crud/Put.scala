@@ -19,7 +19,8 @@ sealed trait Put[K, O] {
 
 object Put {
 
-  import scsc.ops.Columns
+/*
+  import scsc.ops.AsColumns
   import scsc.ops.hlist.{Extract, SetColumnValues}
   import shapeless.ops.hlist.Prepend
 
@@ -28,11 +29,11 @@ object Put {
   }
 
   implicit def put[K <: HList, O <: HList, C <: HList, R <: HList](
-      implicit keyColumns: Columns[K],
-      optionalColumns: Columns[O],
-      ev: Prepend.Aux[K, O, C],
-      ev1: C Extract R,
-      ev2: SetColumnValues.Aux[C, R]
+                                                                      implicit keyColumns: AsColumns[K],
+                                                                      optionalColumns: AsColumns[O],
+                                                                      ev: Prepend.Aux[K, O, C],
+                                                                      ev1: C Extract R,
+                                                                      ev2: SetColumnValues.Aux[C, R]
   ): Aux[K, O, R] = new Put[K, O] {
 
     import com.datastax.oss.driver.api.core.cql.BoundStatement
@@ -55,4 +56,5 @@ object Put {
         b.setToRecord(record)
       }
   }
+*/
 }

@@ -6,6 +6,7 @@ package object crud {
 
    val CR: String = System.lineSeparator()
 
+/*
   object columnNames extends Poly1 {
 
     import scsc.ops.cqltype.GetCqlTypeName
@@ -16,6 +17,7 @@ package object crud {
                                                                                                s"${column.name}, ${nameOfType()}" + CR)
   }
 
+*/
   /*
     object InsertInto {
       implicit def apply[P <: HList, C <: HList, O <: HList, PCO <: HList](implicit columns: Columns.Aux[P, C, O, PCO],

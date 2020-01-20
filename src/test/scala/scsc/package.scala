@@ -1,21 +1,18 @@
-
-
 package object scsc {
 
   import scsc.CqlType.{BOOLEAN, DOUBLE, INT, TEXT}
-  import scsc.ops.hlist.Underlying
+  import scsc.ops.hlist.{GetNames, GetTypes}
   import shapeless.{::, the, HNil}
 
   type TestKey = String :: Int :: Double :: HNil
   type TestRecord = String :: Int :: Double :: Option[Boolean] :: HNil
-  type TestPartitioning = Column.Aux[TEXT, "foo"] :: Column.Aux[INT, "bar"] :: HNil
-  type TestClustering = Column.Aux[DOUBLE, "baz"] :: HNil
-  type TestOptional = Column.Aux[BOOLEAN, "qux"] :: HNil
-  val partitioningTestColumns: TestPartitioning = TEXT["foo"] :: INT["bar"] :: HNil
-  val clusteringTestColumns: TestClustering = DOUBLE["baz"] :: HNil
-  val optionalTestColumns: TestOptional = BOOLEAN["qux"] :: HNil
-  the[Underlying[TestPartitioning]]
-
-
+  type TestPartitioning = Column["foo", TEXT] :: Column["bar", INT] :: HNil
+  type TestClustering = Column["baz", DOUBLE] :: HNil
+  type TestOptional = Column["qux", BOOLEAN] :: HNil
+  val partitioningTestColumns: TestPartitioning = TEXT("foo") :: INT("bar") :: HNil
+  val clusteringTestColumns: TestClustering = DOUBLE("baz") :: HNil
+  val optionalTestColumns: TestOptional = BOOLEAN("qux") :: HNil
+  the[GetTypes[TestPartitioning]]
+  the[GetNames[TestPartitioning]]
 
 }

@@ -3,7 +3,7 @@ plugins {
 }
 
 tasks.withType(ScalaCompile) {
-  //  scalaCompileOptions.additionalParameters = ["-Vimplicits"]
+      scalaCompileOptions.additionalParameters = ["-Vimplicits"]
 }
 
 dependencies {
@@ -12,7 +12,10 @@ dependencies {
     def cassandraDriverVersion = "4.3.1"
     def scalaTestVersion = "3.1.0"
     def jUnitVersion = "5.2"
-
+    def catsVersion = '2.1.0'
+    def javaCompatVersion = '0.9.0'
+    implementation "org.typelevel:cats-core_$scalaVersion:$catsVersion"
+    implementation "org.scala-lang.modules:scala-java8-compat_$scalaVersion:$javaCompatVersion"
     implementation "org.scala-lang:scala-library:$scalaVersion+"
     implementation "com.chuusai:shapeless_$scalaVersion:$shapelessVersion+"
     implementation "com.datastax.oss:java-driver-core:$cassandraDriverVersion+"

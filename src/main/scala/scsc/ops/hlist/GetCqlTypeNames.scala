@@ -13,7 +13,7 @@ object GetCqlTypeNames {
   import shapeless.HNil
 
   implicit def getHConsTypeNames[A, H, T <: HList](
-      implicit ev: H <:< Column[A],
+      implicit ev: H <:< Column[_,A],
       getName: GetCqlTypeName[A],
       getTailNames: GetCqlTypeNames[T]
   ): GetCqlTypeNames[shapeless.::[H, T]] =

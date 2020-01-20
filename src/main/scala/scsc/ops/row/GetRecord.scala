@@ -1,7 +1,7 @@
 package scsc.ops.row
 
 import com.datastax.oss.driver.api.core.cql.Row
-import scsc.{Column, CqlType}
+import scsc.CqlType
 import shapeless.{::, HList, HNil}
 
 trait GetRecord[L <: HList] {

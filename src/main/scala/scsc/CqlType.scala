@@ -47,10 +47,10 @@ object CqlType {
   sealed trait ASCII extends CqlType
 
   sealed trait CqlTypeOps[C <: CqlType] {
+
     def getName(implicit toString: GetCqlTypeName[C]): String = toString()
 
-    def apply[N <: Singleton with String: ValueOf]: Column.Aux[C, N] =
-      Column[C, N]
+    def apply[N <: Singleton with String](name: N): Column[N, C] = Column[N, C]
   }
 
   implicit object BLOB extends CqlTypeOps[BLOB]

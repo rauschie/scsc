@@ -6,7 +6,7 @@ import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class CreateTest extends AnyWordSpec {
-  "Create" when {
+/*  "Create" when {
     "summoned" should {
       "have the right output" in {
         import scsc.CqlType.{BOOLEAN, DOUBLE, INT, TEXT}
@@ -29,5 +29,5 @@ class CreateTest extends AnyWordSpec {
         }
       }
     }
-  }
+  }*/
 }

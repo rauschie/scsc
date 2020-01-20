@@ -3,7 +3,6 @@ typesafe CRUD : KV Store
 columnar access
 moeglichst simple table creation
 
-create: Table => Unit //P0, C0, O0
 put: Table X Record => Unit  //AllCols, Record
 insert into table val ***
 put: Table X Iterable[Record] => Unit

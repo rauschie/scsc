@@ -1,7 +1,5 @@
 package scsc.ops.cqltype
 
-import scsc.CqlType
-
 trait GetCqlTypeName[C] {
   def apply(): String
 }
@@ -10,7 +8,7 @@ object GetCqlTypeName {
 
   import scsc.CqlType._
 
-  type Aux[C, M] = GetCqlTypeName[C] {type MappedTo = M}
+  type Aux[C, M] = GetCqlTypeName[C] { type MappedTo = M }
 
   implicit object BIGINTtoString extends GetCqlTypeName[BIGINT] {
     def apply(): String = "BOOLEAN"

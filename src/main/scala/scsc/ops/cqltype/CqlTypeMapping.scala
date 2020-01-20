@@ -10,7 +10,7 @@ object CqlTypeMapping {
 
   import scsc.CqlType._
 
-  type Aux[C <: CqlType, M] = CqlTypeMapping[C] {type MappedTo = M}
+  type Aux[C <: CqlType, M] = CqlTypeMapping[C] { type MappedTo = M }
 
   implicit object BIGINTMapping extends CqlTypeMapping[BIGINT] {
     type MappedTo = Long

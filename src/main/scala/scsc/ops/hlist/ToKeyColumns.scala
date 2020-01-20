@@ -18,12 +18,11 @@ object ToKeyColumns {
 
   implicit def toHConsColumns[C <: CqlType, N <: Singleton with String, T <: HList](
       implicit mapping: CqlTypeMapping[C],
-      name: ValueOf[N],
       toTailColumns: ToKeyColumns[T]
-    ): Aux[Column.Aux[C, N] :: T, Column.Aux[mapping.MappedTo, N] :: toTailColumns.Out] = new ToKeyColumns[Column.Aux[C, N] :: T] {
-    type Out = Column.Aux[mapping.MappedTo, N] :: toTailColumns.Out
+    ): Aux[Column[N, C] :: T, Column[N, mapping.MappedTo] :: toTailColumns.Out] = new ToKeyColumns[Column[N, C] :: T] {
+    type Out = Column[N, mapping.MappedTo] :: toTailColumns.Out
 
-    def apply(): Out = Column[mapping.MappedTo, N] :: toTailColumns()
+    def apply(): Out = Column[N, mapping.MappedTo] :: toTailColumns()
   }
 
   implicit object toHNilColumn extends ToKeyColumns[HNil] {

@@ -18,13 +18,12 @@ object ToOptionalColumns {
 
   implicit def toHConsColumns[C <: CqlType, N <: Singleton with String, T <: HList](
       implicit mapping: CqlTypeMapping[C],
-      name: ValueOf[N],
       toTailColumns: ToOptionalColumns[T]
-  ): Aux[Column.Aux[C, N] :: T, Column.Aux[Option[mapping.MappedTo], N] :: toTailColumns.Out] =
-    new ToOptionalColumns[Column.Aux[C, N] :: T] {
-      type Out = Column.Aux[Option[mapping.MappedTo], N] :: toTailColumns.Out
+  ): Aux[Column[N, C] :: T, Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out] =
+    new ToOptionalColumns[Column[N, C] :: T] {
+      type Out = Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out
 
-      def apply(): Out = Column[Option[mapping.MappedTo], N] :: toTailColumns()
+      def apply(): Out = Column[N, Option[mapping.MappedTo]] :: toTailColumns()
     }
 
   implicit object toHNilColumn extends ToOptionalColumns[HNil] {

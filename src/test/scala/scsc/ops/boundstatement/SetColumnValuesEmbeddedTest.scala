@@ -4,7 +4,6 @@ import com.datastax.oss.driver.api.core.cql.BoundStatement
 import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
-import scsc.Column.Aux
 import scsc.syntax.BoundStatementOps
 import scsc.EmbeddedCassandraTestSuite
 import shapeless.{::, the, HNil}
@@ -21,11 +20,12 @@ class SetColumnValuesEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTest
 
     "summoned" must {
       "set values" in withDefaultTable { session =>
+        import scsc.Column
         val boundStatement: BoundStatement = session.prepare("insert into cyclist_by_year_and_name " +
                                                                "(race_year, race_name, rank, cyclist_name) " +
                                                                "values (?, ?, ?, ?)")
                                                     .bind()
-        implicit val Setter = the[SetColumnValues.Aux[Aux[Int, "race_year"] :: Aux[String, "race_name"] :: Aux[Int, "rank"] :: Aux[String, "cyclist_name"] :: HNil,
+        implicit val Setter = the[SetColumnValues.Aux[Column["race_year", Int] :: Column["race_name", String] :: Column["rank", Int] :: Column["cyclist_name", String] :: HNil,
           Int :: String :: Int :: String :: HNil]]
         boundStatement.setToRecord(2000 :: "foo" :: 2 :: "bar" :: HNil)
 

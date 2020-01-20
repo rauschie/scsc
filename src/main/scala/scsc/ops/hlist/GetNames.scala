@@ -1,24 +1,26 @@
 package scsc.ops.hlist
 
-import shapeless.{HList, HNil}
+import shapeless.{HList, ::, HNil}
 
 sealed trait GetNames[L] {
-  def apply(): List[String]
+  type Out <: HList
 }
 
 object GetNames {
 
   import scsc.Column
 
+  type Aux[L, O <: HList] = GetNames[L] {
+    type Out = O
+  }
   implicit def getHConsNames[N <: Singleton with String, H, T <: HList](
-      implicit ev: H <:< Column.Aux[_, N],
-      name: ValueOf[N],
-      getNames: GetNames[T]
-  ): GetNames[shapeless.::[H, T]] = new GetNames[shapeless.::[H, T]] {
-    def apply(): List[String] = name.value :: getNames()
+      implicit ev: H <:< Column[N, _],
+      tailNames: GetNames[T]
+  ): Aux[H :: T, N :: tailNames.Out] = new GetNames[H :: T] {
+    type Out = N :: tailNames.Out
   }
 
   implicit object getHNilName extends GetNames[HNil] {
-    def apply(): List[String] = Nil
+    type Out = HNil
   }
 }

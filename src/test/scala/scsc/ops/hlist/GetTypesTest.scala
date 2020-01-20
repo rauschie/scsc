@@ -3,15 +3,15 @@ package scsc.ops.hlist
 import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
-import scsc.Column
-import shapeless.{::, HNil, the}
+import shapeless.{::, the, HNil}
 
 @RunWith(classOf[JUnitRunner])
-class UnderlyingTest extends AnyWordSpec {
+class GetTypesTest extends AnyWordSpec {
 
   "ExtractUnderlying" when {
-    val extractHNil = the[Underlying[HNil]]
-    val extractHCons = the[Underlying[Column.Aux[String, "foo"] :: Column.Aux[Option[Int], "bar"] :: HNil]]
+    import scsc.Column
+    val extractHNil = the[GetTypes[HNil]]
+    val extractHCons = the[GetTypes[Column["foo", String] :: Column["bar", Option[Int]] :: HNil]]
     "summoned" must {
       "have the right Out type" in {
         the[extractHNil.Out <:< HNil]

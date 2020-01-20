@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement
 
 sealed trait Create[P, C, O] {
 
-  import scsc.ColumnFamily
+  import scsc.schema.ColumnFamily
 
   /*
     CREATE TABLE cycling.cyclist_id (
@@ -18,13 +18,14 @@ sealed trait Create[P, C, O] {
 }
 
 object Create {
+/*
 
-  import scsc.ops.CqlColumns
+  import scsc.ops.AsCqlColumns
 
   implicit def create[P, C, O](
-      implicit part: CqlColumns[P],
-      clust: CqlColumns[C],
-      opt: CqlColumns[O]
+                                  implicit part: AsCqlColumns[P],
+                                  clust: AsCqlColumns[C],
+                                  opt: AsCqlColumns[O]
   ): Create[P, C, O] = new Create[P, C, O] {
 
     def apply(keySpaceName: String, tableName: String): SimpleStatement = {
@@ -44,4 +45,5 @@ object Create {
       )
     }
   }
+*/
 }

@@ -1,14 +1,13 @@
-package scsc
+package scsc.schema
 
 import org.junit.runner.RunWith
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.junit.JUnitRunner
+import scsc.EmbeddedCassandraTestSuite
 
 @RunWith(classOf[JUnitRunner])
 class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
 
-  import scsc.Column.Aux
-  import scsc.KeySpace
   import scsc.CqlType._
   import shapeless.{::, HNil}
 
@@ -17,12 +16,14 @@ class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSui
 
   "ColumnFamily" when {
 
-    val foo = ColumnFamily("foo", TEXT["foo"] :: INT["bar"] :: HNil)
-    val bar = ColumnFamily("bar", TEXT["foo"] :: INT["bar"] :: HNil, BOOLEAN["qux"] :: HNil)
-    val baz = ColumnFamily("baz", (TEXT["foo"] :: INT["bar"] :: HNil, DOUBLE["baz"] :: HNil))
-    val qux = ColumnFamily("qux",
-                           (TEXT["foo"] :: INT["bar"] :: HNil, DOUBLE["baz"] :: HNil),
-                           BOOLEAN["qux"] :: HNil)
+    val foo = ColumnFamily.createFromPartitioningColumns("foo")(TEXT("foo") :: INT("bar") :: HNil)
+    val bar = ColumnFamily.createFromOptionalColumns("bar")(TEXT("foo") :: INT("bar") :: HNil,
+                                                            BOOLEAN("qux") :: HNil)
+    val baz = ColumnFamily.createFromKeyColumns("baz")(TEXT("foo") :: INT("bar") :: HNil,
+                                                       DOUBLE("baz") :: HNil)
+    val qux = ColumnFamily.create("qux")(TEXT("foo") :: INT("bar") :: HNil, DOUBLE("baz") :: HNil)(
+      BOOLEAN("qux") :: HNil
+    )
 
     "instantiated" must {
       "have the right types" in {
@@ -39,7 +40,6 @@ class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSui
       }
 
       "be able to create itself in a keyspace" in withKeySpace("test") { implicit session =>
-        qux.createInKeySpace(KeySpace("test"))
       }
     }
   }

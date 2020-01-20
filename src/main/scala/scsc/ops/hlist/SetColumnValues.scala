@@ -19,8 +19,8 @@ object SetColumnValues {
   implicit def setHCons[N <: Singleton with String, V: Setter, T <: HList](
       implicit name: ValueOf[N],
       setTailValues: SetColumnValues[T]
-  ): Aux[Column.Aux[V, N] :: T, V :: setTailValues.Record] =
-    new SetColumnValues[Column.Aux[V, N] :: T] {
+  ): Aux[Column[N, V] :: T, V :: setTailValues.Record] =
+    new SetColumnValues[Column[N, V] :: T] {
 
       import scsc.syntax.BoundStatementOps
 
