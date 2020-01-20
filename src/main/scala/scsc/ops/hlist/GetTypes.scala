@@ -20,5 +20,4 @@ object GetTypes {
   implicit object hNilGetTypes extends GetTypes[HNil] {
     type Out = HNil
   }
-
 }

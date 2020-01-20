@@ -14,5 +14,4 @@ package object scsc {
   val optionalTestColumns: TestOptional = BOOLEAN("qux") :: HNil
   the[GetTypes[TestPartitioning]]
   the[GetNames[TestPartitioning]]
-
 }
