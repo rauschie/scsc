@@ -14,12 +14,19 @@ sealed trait ColumnFamily[K <: HList, R <: HList] {
   /*
   def put(record: Record): Future[Unit]
   def put(records: Iterable[Record]): Future[Unit]
+  def put(columnNames: _, mapping : (Key, _): Future[Unit]
+  def put(columnNames: _, mappings:Iterable[(Key, _)]): Future[Unit]
 
   def get(key: Key): Future[Record]
   def get(keys: Iterable[Key]): Future[Iterable[Record]]
+  def get(from:Key, to:Key) :Future[Iterable[Record]]
+  def get(columnNames: _, key:Key ): Future[Record]
+  def get(columnNames: _, keys: Iterable[Key]): Future[Iterable[Record]]
+  def get(columnNames: _, from:Key, to:Key) :Future[Iterable[Record]]
 
   def delete(key: Key): Future[Unit]
   def delete(keys: Iterable[Key]): Future[Unit]
+  def delete(from:Key, to:Key) : Future[Unit]
  */
 
 }
@@ -71,10 +78,7 @@ object ColumnFamily {
     }
 
   private[schema] def createFromOptionalColumns[P <: HList, O <: HList](n: String /*, ks: KeySpace*/
-  )(
-      partitioningColumns: P,
-      optionalColumns: O
-  )(
+  )(partitioningColumns: P, optionalColumns: O)(
       implicit context: Context[P, HNil, O]
   ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
     new ColumnFamily[context.Key, context.Record] {

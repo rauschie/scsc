@@ -1,13 +1,14 @@
 package scsc.ops.hlist
 
-import shapeless.{HList, ::, HNil}
+import cats.Monoid
+import shapeless.{::, HList, HNil}
 
-trait ColumnSet[L] {
+sealed trait ColumnSet[L] extends Monoid[ColumnSet[HList]] {
   type Names <: HList
   type Types <: HList
 }
 
-object ColumnSet extends {
+object ColumnSet {
 
   import scsc.Column
   import shapeless.NotContainsConstraint
@@ -31,5 +32,9 @@ object ColumnSet extends {
   implicit object emptyColumnSet extends ColumnSet[HNil] {
     type Names = HNil
     type Types = HNil
+
+    def empty: ColumnSet[HList] = ???
+
+    def combine(x: ColumnSet[HList], y: ColumnSet[HList]): ColumnSet[HList] = ???
   }
 }
