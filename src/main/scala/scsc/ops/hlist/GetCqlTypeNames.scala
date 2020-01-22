@@ -18,7 +18,11 @@ object GetCqlTypeNames {
       getTailNames: GetCqlTypeNames[T]
   ): GetCqlTypeNames[shapeless.::[H, T]] =
     new GetCqlTypeNames[shapeless.::[H, T]] {
+
+      import shapeless.ops.hlist.Partition
+
       def apply(): List[String] = getName() :: getTailNames()
+      Partition
     }
 
   implicit object getHNilTypeName extends GetCqlTypeNames[HNil] {

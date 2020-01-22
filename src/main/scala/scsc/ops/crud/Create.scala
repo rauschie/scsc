@@ -18,6 +18,10 @@ sealed trait Create[P, C, O] {
 }
 
 object Create {
+
+  import shapeless.ops.hlist.CollectFirst
+  import shapeless.ops.zipper.First
+
 /*
 
   import scsc.ops.AsCqlColumns
