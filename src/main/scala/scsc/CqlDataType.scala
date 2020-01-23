@@ -2,51 +2,51 @@ package scsc
 
 import scsc.ops.cqltype.GetCqlTypeName
 
-sealed trait CqlType
+sealed trait CqlDataType
 
-object CqlType {
+object CqlDataType {
 
-  sealed trait BIGINT extends CqlType
+  sealed trait BIGINT extends CqlDataType
 
-  sealed trait BLOB extends CqlType
+  sealed trait BLOB extends CqlDataType
 
-  sealed trait BOOLEAN extends CqlType
+  sealed trait BOOLEAN extends CqlDataType
 
-  sealed trait COUNTER extends CqlType
+  sealed trait COUNTER extends CqlDataType
 
-  sealed trait DATE extends CqlType
+  sealed trait DATE extends CqlDataType
 
-  sealed trait DECIMAL extends CqlType
+  sealed trait DECIMAL extends CqlDataType
 
-  sealed trait DOUBLE extends CqlType
+  sealed trait DOUBLE extends CqlDataType
 
-  sealed trait DURATION extends CqlType
+  sealed trait DURATION extends CqlDataType
 
-  sealed trait FLOAT extends CqlType
+  sealed trait FLOAT extends CqlDataType
 
-  sealed trait INET extends CqlType
+  sealed trait INET extends CqlDataType
 
-  sealed trait INT extends CqlType
+  sealed trait INT extends CqlDataType
 
-  sealed trait SMALLINT extends CqlType
+  sealed trait SMALLINT extends CqlDataType
 
-  sealed trait TEXT extends CqlType
+  sealed trait TEXT extends CqlDataType
 
-  sealed trait TIME extends CqlType
+  sealed trait TIME extends CqlDataType
 
-  sealed trait TIMESTAMP extends CqlType
+  sealed trait TIMESTAMP extends CqlDataType
 
-  sealed trait TIMEUUID extends CqlType
+  sealed trait TIMEUUID extends CqlDataType
 
-  sealed trait TINYINT extends CqlType
+  sealed trait TINYINT extends CqlDataType
 
-  sealed trait UUID extends CqlType
+  sealed trait UUID extends CqlDataType
 
-  sealed trait VARINT extends CqlType
+  sealed trait VARINT extends CqlDataType
 
-  sealed trait ASCII extends CqlType
+  sealed trait ASCII extends CqlDataType
 
-  sealed trait CqlTypeOps[C <: CqlType] {
+  sealed trait CqlTypeOps[C <: CqlDataType] {
 
     def getName(implicit toString: GetCqlTypeName[C]): String = toString()
 
