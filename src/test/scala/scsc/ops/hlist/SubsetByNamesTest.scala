@@ -7,6 +7,7 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class SubsetByNamesTest extends AnyWordSpec {
   import shapeless.{the, HNil, ::}
+  import scsc.CqlDataType._
   "SubsetByNames" when {
     "called on HNil" should {
       "return empty" in {
@@ -19,7 +20,6 @@ class SubsetByNamesTest extends AnyWordSpec {
       "return with the right type" in {
         import scsc.TestPartitioning
         import scsc.Column
-        import scsc.CqlType.TEXT
         val f1 = the[SubsetByNames[TestPartitioning, "foo" :: HNil]]
         the[f1.MappedTo <:< (Column["foo", TEXT] :: HNil)]
       }
@@ -28,7 +28,6 @@ class SubsetByNamesTest extends AnyWordSpec {
       "return with the right types" in {
         import scsc.TestPartitioning
         import scsc.Column
-        import scsc.CqlType._
         val f1 = the[SubsetByNames[TestPartitioning, "foo" :: "bar" :: HNil]]
         the[f1.MappedTo <:< (Column["foo", TEXT] :: Column["bar", INT] :: HNil)]
       }

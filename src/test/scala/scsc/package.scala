@@ -1,6 +1,6 @@
 package object scsc {
 
-  import scsc.CqlType.{BOOLEAN, DOUBLE, INT, TEXT}
+  import scsc.CqlDataType.{BOOLEAN, DOUBLE, INT, TEXT}
   import scsc.ops.hlist.{FindByName, GetNames, GetTypes}
   import shapeless.{::, the, HNil}
   import shapeless.ops.hlist.{Filter, Selector}

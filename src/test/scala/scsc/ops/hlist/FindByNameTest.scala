@@ -7,7 +7,7 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class FindByNameTest extends AnyWordSpec {
   import scsc.Column
-  import scsc.CqlType._
+  import scsc.CqlDataType._
   import shapeless.{the, HNil, ::}
   "FindByName" when {
     "given a findable name" must {

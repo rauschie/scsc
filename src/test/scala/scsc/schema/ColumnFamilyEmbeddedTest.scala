@@ -8,7 +8,7 @@ import scsc.EmbeddedCassandraTestSuite
 @RunWith(classOf[JUnitRunner])
 class ColumnFamilyEmbeddedTest extends AnyWordSpec with EmbeddedCassandraTestSuite {
 
-  import scsc.CqlType._
+  import scsc.CqlDataType._
   import shapeless.{::, HNil}
 
   type TestKey = String :: Int :: Double :: HNil
