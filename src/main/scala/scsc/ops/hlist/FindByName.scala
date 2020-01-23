@@ -3,9 +3,9 @@ package scsc.ops.hlist
 import scsc.ops.BinaryTypeMapping
 import shapeless.{::, HList}
 
-trait FindByName[L, N <: String] extends BinaryTypeMapping[L, N]
+sealed trait FindByName[L, N <: String] extends BinaryTypeMapping[L, N]
 
-object FindByName {
+object FindByName extends LowPriorityFindByName {
 
   import scsc.Column
 
@@ -19,11 +19,16 @@ object FindByName {
       type MappedTo = Column[N, A]
     }
 
+}
+
+sealed trait LowPriorityFindByName {
+
+  import scsc.ops.hlist.FindByName.Aux
+
   implicit def keepLooking[H, T <: HList, N <: Singleton with String](
       implicit findInTail: FindByName[T, N]
   ): Aux[H :: T, N, findInTail.MappedTo] =
     new FindByName[H :: T, N] {
       type MappedTo = findInTail.MappedTo
     }
-
 }

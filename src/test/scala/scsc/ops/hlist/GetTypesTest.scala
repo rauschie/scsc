@@ -8,13 +8,18 @@ import shapeless.{::, the, HNil}
 @RunWith(classOf[JUnitRunner])
 class GetTypesTest extends AnyWordSpec {
 
+  import scsc.Column
   "ExtractUnderlying" when {
-    import scsc.Column
-    val extractHNil = the[GetTypes[HNil]]
-    val extractHCons = the[GetTypes[Column["foo", String] :: Column["bar", Option[Int]] :: HNil]]
-    "summoned" must {
-      "have the right MappedTo type" in {
+    "given HNil" must {
+      "map to the tight type" in {
+        val extractHNil = the[GetTypes[HNil]]
         the[extractHNil.MappedTo <:< HNil]
+      }
+    }
+    "given HCons" must {
+      "map to the right type" in {
+        val extractHCons =
+          the[GetTypes[Column["foo", String] :: Column["bar", Option[Int]] :: HNil]]
         the[extractHCons.MappedTo <:< (String :: Option[Int] :: HNil)]
       }
     }
