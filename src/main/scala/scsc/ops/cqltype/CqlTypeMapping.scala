@@ -1,10 +1,9 @@
 package scsc.ops.cqltype
 
 import scsc.CqlType
+import scsc.ops.UnaryTypeMapping
 
-sealed trait CqlTypeMapping[C <: CqlType] {
-  type MappedTo
-}
+sealed trait CqlTypeMapping[C <: CqlType] extends UnaryTypeMapping[C]
 
 object CqlTypeMapping {
 

@@ -13,9 +13,9 @@ class GetTypesTest extends AnyWordSpec {
     val extractHNil = the[GetTypes[HNil]]
     val extractHCons = the[GetTypes[Column["foo", String] :: Column["bar", Option[Int]] :: HNil]]
     "summoned" must {
-      "have the right Out type" in {
-        the[extractHNil.Out <:< HNil]
-        the[extractHCons.Out <:< (String :: Option[Int] :: HNil)]
+      "have the right MappedTo type" in {
+        the[extractHNil.MappedTo <:< HNil]
+        the[extractHCons.MappedTo <:< (String :: Option[Int] :: HNil)]
       }
     }
   }

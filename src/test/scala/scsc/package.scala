@@ -9,9 +9,9 @@ package object scsc {
   type TestRecord = String :: Int :: Double :: Option[Boolean] :: HNil
   type TestPartitioning = Column["foo", TEXT] :: Column["bar", INT] :: HNil
   val v=the[FindByName[TestPartitioning,"foo"]]
-  the[v.Out<:<Column["foo",TEXT]]
+  the[v.MappedTo<:<Column["foo",TEXT]]
   val v1=the[FindByName[TestPartitioning,"bar"]]
-  the[v1.Out<:<Column["bar",INT]]
+  the[v1.MappedTo<:<Column["bar",INT]]
   //val v2=the[FindByName[TestPartitioning,"baz"]]
 
   type TestClustering = Column["baz", DOUBLE] :: HNil

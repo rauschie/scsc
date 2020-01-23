@@ -1,23 +1,24 @@
 package scsc.ops.hlist
 
 import scsc.Column
+import scsc.ops.UnaryTypeMapping
 import shapeless.{::, HList, HNil}
 
-sealed trait GetTypes[L] {
-  type Out <: HList
+sealed trait GetTypes[L] extends UnaryTypeMapping[L] {
+  type MappedTo <: HList
 }
 
 object GetTypes {
-  type Aux[L, O0 <: HList] = GetTypes[L] { type Out = O0 }
+  type Aux[L, O0 <: HList] = GetTypes[L] { type MappedTo = O0 }
 
   implicit def hConsGetTypes[A, H, T <: HList](
       implicit ev: H <:< Column[_, A],
       extractTail: GetTypes[T]
-  ): Aux[H :: T, A :: extractTail.Out] = new GetTypes[H :: T] {
-    type Out = A :: extractTail.Out
+  ): Aux[H :: T, A :: extractTail.MappedTo] = new GetTypes[H :: T] {
+    type MappedTo = A :: extractTail.MappedTo
   }
 
   implicit object hNilGetTypes extends GetTypes[HNil] {
-    type Out = HNil
+    type MappedTo = HNil
   }
 }
