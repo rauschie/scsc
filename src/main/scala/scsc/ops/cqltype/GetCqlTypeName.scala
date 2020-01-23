@@ -6,7 +6,7 @@ trait GetCqlTypeName[C] {
 
 object GetCqlTypeName {
 
-  import scsc.CqlType._
+  import scsc.CqlDataType._
 
   type Aux[C, M] = GetCqlTypeName[C] { type MappedTo = M }
 

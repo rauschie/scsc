@@ -1,15 +1,15 @@
 package scsc.ops.cqltype
 
-import scsc.CqlType
+import scsc.CqlDataType
 import scsc.ops.UnaryTypeMapping
 
-sealed trait CqlTypeMapping[C <: CqlType] extends UnaryTypeMapping[C]
+sealed trait CqlTypeMapping[C <: CqlDataType] extends UnaryTypeMapping[C]
 
 object CqlTypeMapping {
 
-  import scsc.CqlType._
+  import scsc.CqlDataType._
 
-  type Aux[C <: CqlType, M] = CqlTypeMapping[C] { type MappedTo = M }
+  type Aux[C <: CqlDataType, M] = CqlTypeMapping[C] { type MappedTo = M }
 
   implicit object BIGINTMapping extends CqlTypeMapping[BIGINT] {
     type MappedTo = Long

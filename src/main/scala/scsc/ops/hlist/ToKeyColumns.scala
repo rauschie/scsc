@@ -10,13 +10,13 @@ trait ToKeyColumns[L] {
 
 object ToKeyColumns {
 
-  import scsc.{Column, CqlType}
+  import scsc.{Column, CqlDataType}
   import scsc.ops.cqltype.CqlTypeMapping
   import shapeless.{::, HNil}
 
   type Aux[L0, O <: HList] = ToKeyColumns[L0] { type Out = O }
 
-  implicit def toHConsColumns[C <: CqlType, N <: Singleton with String, T <: HList](
+  implicit def toHConsColumns[C <: CqlDataType, N <: Singleton with String, T <: HList](
       implicit mapping: CqlTypeMapping[C],
       toTailColumns: ToKeyColumns[T]
     ): Aux[Column[N, C] :: T, Column[N, mapping.MappedTo] :: toTailColumns.Out] = new ToKeyColumns[Column[N, C] :: T] {

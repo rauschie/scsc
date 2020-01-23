@@ -10,13 +10,13 @@ trait ToOptionalColumns[L] {
 
 object ToOptionalColumns {
 
-  import scsc.{Column, CqlType}
+  import scsc.{Column, CqlDataType}
   import scsc.ops.cqltype.CqlTypeMapping
   import shapeless.{::, HNil}
 
   type Aux[L0, O <: HList] = ToOptionalColumns[L0] { type Out = O }
 
-  implicit def toHConsColumns[A <: CqlType, N <: Singleton with String, T <: HList](
+  implicit def toHConsColumns[A <: CqlDataType, N <: Singleton with String, T <: HList](
       implicit mapping: CqlTypeMapping[A],
       toTailColumns: ToOptionalColumns[T]
   ): Aux[Column[N, A] :: T, Column[N, Option[mapping.MappedTo]] :: toTailColumns.Out] =
