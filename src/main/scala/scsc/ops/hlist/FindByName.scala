@@ -9,8 +9,8 @@ object FindByName extends LowPriorityFindByName {
 
   import scsc.Column
 
-  type Aux[L, N <: String, O] = FindByName[L, N] {
-    type MappedTo = O
+  type Aux[L, N <: String, M] = FindByName[L, N] {
+    type MappedTo = M
   }
 
   implicit def found[N <: Singleton with String, A, T <: HList]

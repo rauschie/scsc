@@ -18,7 +18,11 @@ object GetNames {
       implicit ev: H <:< Column[N, _],
       tailNames: GetNames[T]
   ): Aux[H :: T, N :: tailNames.MappedTo] = new GetNames[H :: T] {
+
+    import shapeless.ops.hlist.Partition
+
     type MappedTo = N :: tailNames.MappedTo
+    Partition
   }
 
   implicit object getHNilName extends GetNames[HNil] {
