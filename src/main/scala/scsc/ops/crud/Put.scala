@@ -5,56 +5,38 @@ import shapeless.HList
 
 import com.datastax.oss.driver.api.core.cql.SimpleStatement
 
-sealed trait Put[K, O] {
+sealed trait Put[Kl, Cl] {
+  type Names <: HList
 
   import com.datastax.oss.driver.api.core.cql.BoundStatement
 
-  type Record <: HList
-  val put: (Record, CqlSession) => BoundStatement
-
-  def getQuery(tableName: String): String
-
-  def prepare(tableName: String): SimpleStatement
+  def getQuery(keySpaceName: String, tableName: String): String
 }
 
 object Put {
 
-/*
-  import scsc.ops.AsColumns
-  import scsc.ops.hlist.{Extract, SetColumnValues}
+  import scsc.ops.hlist.{AsColumns, Extract, GetNames, SetColumnValues}
   import shapeless.ops.hlist.Prepend
+  import shapeless.BasisConstraint
 
-  type Aux[K, O, R] = Put[K, O] {
-    type Record = R
+  type Aux[Kl, Cl, Nl] = Put[Kl, Cl] {
+    type Names = Nl
   }
 
-  implicit def put[K <: HList, O <: HList, C <: HList, R <: HList](
-                                                                      implicit keyColumns: AsColumns[K],
-                                                                      optionalColumns: AsColumns[O],
-                                                                      ev: Prepend.Aux[K, O, C],
-                                                                      ev1: C Extract R,
-                                                                      ev2: SetColumnValues.Aux[C, R]
-  ): Aux[K, O, R] = new Put[K, O] {
+  implicit def put[Kl: GetNames, Kn, Cl, Cn, Nl](
+      implicit keyNames: GetNames.Aux[Kl, Kn],
+      ev: BasisConstraint[Kn, Nl]
+  ): Aux[Kl, Cl, Nl] = new Put[Kl, Cl] {
 
     import com.datastax.oss.driver.api.core.cql.BoundStatement
 
-    type Record = R
+    type Names = Nl
 
     def getQuery(tableName: String): String = {
       val columns = keyColumns.names ::: optionalColumns.names
+      columNames
       s"INSERT INTO $tableName (${columns.mkString(", ")}) " +
         s"VALUES (${columns map (_ => "?") mkString ", "})"
     }
-
-    def prepare(tableName: String): SimpleStatement =
-      SimpleStatement.newInstance(getQuery(tableName))
-
-    val put: (R, CqlSession) => BoundStatement =
-      (record: Record, session: CqlSession) => {
-        import scsc.syntax.BoundStatementOps
-        val b: BoundStatement = ???
-        b.setToRecord(record)
-      }
   }
-*/
 }

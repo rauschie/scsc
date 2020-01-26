@@ -13,16 +13,12 @@ object GetCqlTypeNames {
   import shapeless.HNil
 
   implicit def getHConsTypeNames[A, H, T <: HList](
-      implicit ev: H <:< Column[_,A],
+      implicit ev: H <:< Column[_, A],
       getName: GetCqlTypeName[A],
       getTailNames: GetCqlTypeNames[T]
   ): GetCqlTypeNames[shapeless.::[H, T]] =
     new GetCqlTypeNames[shapeless.::[H, T]] {
-
-      import shapeless.ops.hlist.Partition
-
       def apply(): List[String] = getName() :: getTailNames()
-      Partition
     }
 
   implicit object getHNilTypeName extends GetCqlTypeNames[HNil] {

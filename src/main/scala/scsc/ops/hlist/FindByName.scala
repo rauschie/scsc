@@ -7,6 +7,7 @@ sealed trait FindByName[L, N <: String] extends BinaryTypeMapping[L, N]
 
 object FindByName extends LowPriorityFindByName {
 
+  import cats.Show
   import scsc.Column
 
   type Aux[L, N <: String, M] = FindByName[L, N] {
@@ -18,7 +19,6 @@ object FindByName extends LowPriorityFindByName {
     new FindByName[Column[N, A] :: T, N] {
       type MappedTo = Column[N, A]
     }
-
 }
 
 sealed trait LowPriorityFindByName {
