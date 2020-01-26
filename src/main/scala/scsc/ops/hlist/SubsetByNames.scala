@@ -12,6 +12,7 @@ object SubsetByNames extends LowPrioritySubsetByNames {
   type Aux[L, N, M <: HList] = SubsetByNames[L, N] {
     type MappedTo = M
   }
+
   implicit def matching[L, N <: Singleton with String, T <: HList](
       implicit ev: FindByName[L, N],
       findNames: SubsetByNames[L, T]

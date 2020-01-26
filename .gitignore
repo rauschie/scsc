@@ -4,6 +4,7 @@
 build/
 gradle/
 target/
+*.code-workspace
 bin
 .settings/
 .metals

@@ -11,11 +11,12 @@ sealed trait ColumnFamily[K <: HList, R <: HList] {
   type ColumnNames <: HList
   // val keySpace: KeySpace
   val cqlId: CqlIdentifier
+  //TODO: determine Put dependencies
   /*
   def put(record: Record): Future[Unit]
   def put(records: Iterable[Record]): Future[Unit]
-  def put(columnNames: _, mapping : (Key, _): Future[Unit]
-  def put(columnNames: _, mappings:Iterable[(Key, _)]): Future[Unit]
+  def put[N,V](columnNames: N, mapping : (Key, V): Future[Unit]
+  def put[N,V](columnNames: N, mappings:Iterable[(Key, V)]): Future[Unit]
 
   def get(key: Key): Future[Record]
   def get(keys: Iterable[Key]): Future[Iterable[Record]]
@@ -28,7 +29,6 @@ sealed trait ColumnFamily[K <: HList, R <: HList] {
   def delete(keys: Iterable[Key]): Future[Unit]
   def delete(from:Key, to:Key) : Future[Unit]
  */
-
 }
 
 object ColumnFamily {
@@ -58,6 +58,7 @@ object ColumnFamily {
       implicit context: Context[P, C, O]
   ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
     new ColumnFamily[context.Key, context.Record] {
+
       type KeyColumnNames = context.KeyColumnNames
       type ColumnNames = context.ColumnNames
       //  val keySpace: KeySpace = ks

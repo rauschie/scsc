@@ -12,7 +12,7 @@ class ContextTest extends AnyWordSpec {
     val pCtx = the[Context[TestP0, HNil, HNil]]
     val ptCtx = the[Context[TestP0, TestC0, HNil]]
     val poCtx = the[Context[TestP0, HNil, TestO0]]
-    val pcoCtx = the[Context[TestP0, TestC0, TestC0]]
+    val pcoCtx = the[Context[TestP0, TestC0, TestO0]]
     "summoned" should {
       "have the right types" in {
         import scsc.{TestKey, TestRecord}

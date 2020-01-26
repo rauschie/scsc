@@ -11,7 +11,6 @@ trait Context[P0 <: HList, C0 <: HList, O0 <: HList] {
 }
 
 object Context {
-  import scsc.ops.hlist.AsColumns
 
   type Aux[P0 <: HList, C0 <: HList, O0 <: HList, KN <: HList, K <: HList, CN, R <: HList] =
     Context[P0, C0, O0] {
@@ -55,7 +54,7 @@ object Context {
       type Key = K
     }
 
-    import scsc.ops.hlist.ToKey
+    import scsc.ops.hlist.{AsColumns, ToKey}
     import shapeless.ops.hlist.Prepend
     import shapeless.HList
 
@@ -82,7 +81,7 @@ object Context {
 
   object RecordDescriptor {
 
-    import scsc.ops.hlist.ToOptional
+    import scsc.ops.hlist.{AsColumns, ToOptional}
     import shapeless.ops.hlist.Prepend
 
     type Aux[P0, C0, O0, CN <: HList, R <: HList] = RecordDescriptor[P0, C0, O0] {
