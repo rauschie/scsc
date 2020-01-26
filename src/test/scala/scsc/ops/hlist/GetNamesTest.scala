@@ -10,8 +10,8 @@ class GetNamesTest extends AnyWordSpec {
   "GetNames" when {
     "called on HCons" should {
       "return the right names" in {
-        import scsc.TestPartitioning
-        val gn = the[GetNames[TestPartitioning]]
+        import scsc.TestP0
+        val gn = the[GetNames[TestP0]]
         the[gn.MappedTo <:< ("foo" :: "bar" :: HNil)]
       }
     }

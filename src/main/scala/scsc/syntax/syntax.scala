@@ -7,10 +7,9 @@ import scala.language.implicitConversions
 package object syntax {
 
   import com.datastax.oss.driver.api.core.cql.BoundStatement
-  import scsc.ops.AsColumns
+  import scsc.ops.hlist.AsColumns
 
-  implicit class BoundStatementOps(val boundStatement: BoundStatement)
-      extends AnyVal {
+  implicit class BoundStatementOps(val boundStatement: BoundStatement) extends AnyVal {
 
     import com.datastax.oss.driver.api.core.CqlIdentifier
     import scsc.ops.hlist.SetColumnValues.Aux

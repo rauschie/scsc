@@ -18,17 +18,17 @@ class SubsetByNamesTest extends AnyWordSpec {
     }
     "called on HCons having one matching name" should {
       "return with the right type" in {
-        import scsc.TestPartitioning
+        import scsc.TestP0
         import scsc.Column
-        val f1 = the[SubsetByNames[TestPartitioning, "foo" :: HNil]]
+        val f1 = the[SubsetByNames[TestP0, "foo" :: HNil]]
         the[f1.MappedTo <:< (Column["foo", TEXT] :: HNil)]
       }
     }
     "called on HCons having two matching names" should {
       "return with the right types" in {
-        import scsc.TestPartitioning
+        import scsc.TestP0
         import scsc.Column
-        val f1 = the[SubsetByNames[TestPartitioning, "foo" :: "bar" :: HNil]]
+        val f1 = the[SubsetByNames[TestP0, "foo" :: "bar" :: HNil]]
         the[f1.MappedTo <:< (Column["foo", TEXT] :: Column["bar", INT] :: HNil)]
       }
     }

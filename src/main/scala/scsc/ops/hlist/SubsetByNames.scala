@@ -9,8 +9,6 @@ trait SubsetByNames[L, N] extends BinaryTypeMapping[L, N] {
 
 object SubsetByNames extends LowPrioritySubsetByNames {
 
-  import shapeless.the
-
   type Aux[L, N, M <: HList] = SubsetByNames[L, N] {
     type MappedTo = M
   }
