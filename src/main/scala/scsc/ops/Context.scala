@@ -3,7 +3,6 @@ package scsc.ops
 import shapeless.HList
 
 trait Context[P0 <: HList, C0 <: HList, O0 <: HList] {
-
   type KeyColumnNames <: HList
   type ColumnNames <: HList
   type Key <: HList
@@ -49,12 +48,13 @@ object Context {
 
   object KeyDescriptor {
 
-    type Aux[P0, C0, KN <: HList, K <: HList] = KeyDescriptor[P0, C0] {
-      type KeyColumnNames = KN
-      type Key = K
+    //todo fix this
+    type Aux[P0, C0, Kn <: HList, Ku <: HList] = KeyDescriptor[P0, C0] {
+      type KeyColumnNames = Kn
+      type Key = Ku
     }
 
-    import scsc.ops.hlist.{AsColumns, ToKey}
+    import scsc.ops.hlist.{Extract, GetNames, ToKey}
     import shapeless.ops.hlist.Prepend
     import shapeless.HList
 
@@ -62,16 +62,18 @@ object Context {
                                C0,
                                P <: HList,
                                C <: HList,
-                               UP <: HList,
-                               UC <: HList,
-                               PN <: HList,
-                               CN <: HList](
+                               Pu <: HList,
+                               Pn <: HList,
+                               Cu <: HList,
+                               Cn <: HList](
         implicit ev: P0 ToKey P,
         ev1: C0 ToKey C,
-        asPartitioningColumns: AsColumns.Aux[P, UP, PN],
-        asClusteringColumns: AsColumns.Aux[C, UC, CN],
-        prependKey: UP Prepend UC,
-        prependNames: PN Prepend CN
+        partitioningTypes: P Extract Pu,
+        clusteringTypes: C Extract Cu,
+        partitioningNames: GetNames.Aux[P, Pn],
+        clusteringNames: GetNames.Aux[C, Cn],
+        prependKey: Pu Prepend Cu,
+        prependNames: Pn Prepend Cn
     ): Aux[P0, C0, prependNames.Out, prependKey.Out] =
       new KeyDescriptor[P0, C0] {
         type KeyColumnNames = prependNames.Out
@@ -81,9 +83,10 @@ object Context {
 
   object RecordDescriptor {
 
-    import scsc.ops.hlist.{AsColumns, ToOptional}
+    import scsc.ops.hlist.{Extract, GetNames, ToOptional}
     import shapeless.ops.hlist.Prepend
 
+    //todo fix this
     type Aux[P0, C0, O0, CN <: HList, R <: HList] = RecordDescriptor[P0, C0, O0] {
       type ColumnNames = CN
       type Record = R
@@ -91,21 +94,22 @@ object Context {
 
     implicit def recordDescriptor[P0,
                                   C0,
-                                  KN <: HList,
-                                  K <: HList,
+                                  Kn <: HList,
+                                  Ku <: HList,
                                   O0,
                                   O <: HList,
-                                  UO <: HList,
-                                  ON <: HList](
-        implicit key: KeyDescriptor.Aux[P0, C0, KN, K],
+                                  Ou <: HList,
+                                  On <: HList](
+        implicit key: KeyDescriptor.Aux[P0, C0, Kn, Ku],
         ev: O0 ToOptional O,
-        asOptionalColumns: AsColumns.Aux[O, UO, ON],
-        prependNames: KN Prepend ON,
-        prependRecord: K Prepend UO
-    ): Aux[P0, C0, O0, prependNames.Out, prependRecord.Out] =
+        ev1: O Extract Ou,
+        ev2: GetNames.Aux[O, On],
+        prependNames: Kn Prepend On,
+        prependValues: Ku Prepend Ou
+    ): Aux[P0, C0, O0, prependNames.Out, prependValues.Out] =
       new RecordDescriptor[P0, C0, O0] {
         type ColumnNames = prependNames.Out
-        type Record = prependRecord.Out
+        type Record = prependValues.Out
       }
   }
 }

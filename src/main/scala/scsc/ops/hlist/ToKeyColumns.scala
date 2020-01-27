@@ -1,11 +1,11 @@
 package scsc.ops.hlist
 
+import scsc.ops.UnaryTypeMapping
 import shapeless.HList
 
-trait ToKeyColumns[L] {
-  type Out <: HList
+trait ToKeyColumns[L] extends UnaryTypeMapping[L] {
+  type MappedTo <: HList
 
-  def apply(): Out
 }
 
 object ToKeyColumns {
@@ -14,21 +14,17 @@ object ToKeyColumns {
   import scsc.ops.cqltype.CqlTypeMapping
   import shapeless.{::, HNil}
 
-  type Aux[L0, O <: HList] = ToKeyColumns[L0] { type Out = O }
+  type Aux[L0, O <: HList] = ToKeyColumns[L0] { type MappedTo = O }
 
   implicit def toHConsColumns[C <: CqlDataType, N <: Singleton with String, T <: HList](
       implicit mapping: CqlTypeMapping[C],
       toTailColumns: ToKeyColumns[T]
-    ): Aux[Column[N, C] :: T, Column[N, mapping.MappedTo] :: toTailColumns.Out] = new ToKeyColumns[Column[N, C] :: T] {
-    type Out = Column[N, mapping.MappedTo] :: toTailColumns.Out
-
-    def apply(): Out = Column[N, mapping.MappedTo] :: toTailColumns()
-  }
+  ): Aux[Column[N, C] :: T, Column[N, mapping.MappedTo] :: toTailColumns.MappedTo] =
+    new ToKeyColumns[Column[N, C] :: T] {
+      type MappedTo = Column[N, mapping.MappedTo] :: toTailColumns.MappedTo
+    }
 
   implicit object toHNilColumn extends ToKeyColumns[HNil] {
-    type Out = HNil
-
-    def apply(): Out = HNil
+    type MappedTo = HNil
   }
-
 }

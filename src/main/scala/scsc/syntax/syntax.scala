@@ -7,7 +7,6 @@ import scala.language.implicitConversions
 package object syntax {
 
   import com.datastax.oss.driver.api.core.cql.BoundStatement
-  import scsc.ops.hlist.AsColumns
 
   implicit class BoundStatementOps(val boundStatement: BoundStatement) extends AnyVal {
 
@@ -25,7 +24,6 @@ package object syntax {
       setter.setValueTo(boundStatement, CqlIdentifier.fromCql(name), v)
   }
 
-  implicit def asColumns[L](columns: L)(implicit ops: AsColumns[L]): AsColumns[L] =
-    ops
+
 
 }

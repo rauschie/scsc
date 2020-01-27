@@ -2,7 +2,7 @@ package scsc.schema
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import shapeless.HList
-
+//todo figure out this type signature
 sealed trait ColumnFamily[K <: HList, R <: HList] {
 
   type Key = K
@@ -11,7 +11,6 @@ sealed trait ColumnFamily[K <: HList, R <: HList] {
   type ColumnNames <: HList
   // val keySpace: KeySpace
   val cqlId: CqlIdentifier
-  //TODO: determine Put dependencies
   /*
   def put(record: Record): Future[Unit]
   def put(records: Iterable[Record]): Future[Unit]
