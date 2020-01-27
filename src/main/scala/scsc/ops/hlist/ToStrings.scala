@@ -6,7 +6,6 @@ sealed trait ToStrings[L] {
 }
 
 object ToStrings {
-  //todo test this
 
   import scsc.ops.show.NullaryShow
   import shapeless.{::, HList, HNil}

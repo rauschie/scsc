@@ -7,7 +7,7 @@ trait NullaryShow[A] extends Show[A] {
 }
 
 object NullaryShow {
-  import scala.language.implicitConversions
-  implicit def cqlTypeShow[A](show: CqlTypeShow[A]): NullaryShow[A] = show
-  implicit def singletonStringShow[A<:String](show: SingletonStringShow[A]): NullaryShow[A] = show
+  import scsc.CqlDataType
+  implicit def cqlTypeShow[A<:CqlDataType](implicit show: CqlDataTypeShow[A]): NullaryShow[A] = show
+  implicit def singletonStringShow[A<:String](implicit show: SingletonStringShow[A]): NullaryShow[A] = show
 }

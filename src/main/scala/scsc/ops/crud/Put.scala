@@ -12,14 +12,15 @@ object Put {
 //todo make this pass tests
   import scsc.ops.hlist.{GetNames, ToStrings}
   import shapeless.BasisConstraint
+  import shapeless.ops.hlist.Prepend
 
   type Aux[Kl, Cl, Nl] = Put[Kl, Cl] {
     type Names = Nl
   }
 
-  implicit def put[Kl <: HList, Kn <: HList, Cl, Cn, Nl <: HList](
+  implicit def put[Kl <: HList, Cl, Kn<:HList, Cn<:HList, Nl <: HList](
       implicit keyNames: GetNames.Aux[Kl, Kn],
-      columnNames: GetNames[Cl],
+      columnNames: GetNames.Aux[Cl, Cn],
       ev: BasisConstraint[Kn, Nl],
       names: ToStrings[Nl]
   ): Aux[Kl, Cl, Nl] = new Put[Kl, Cl] {
@@ -32,9 +33,9 @@ object Put {
     }
   }
 
-  implicit def put[Kl <: HList, Cl <: HList, Nl<:HList](
+  implicit def put[Kl <: HList, Cl <: HList, Nl <: HList](
       implicit keyColumnNames: GetNames[Kl],
-      columnNames: GetNames.Aux[Cl,Nl],
+      columnNames: GetNames.Aux[Cl, Nl],
       names: ToStrings[Nl]
   ): Put[Kl, Cl] = new Put[Kl, Cl] {
     type Names = Nl

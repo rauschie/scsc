@@ -48,7 +48,6 @@ object Context {
 
   object KeyDescriptor {
 
-    //todo fix this
     type Aux[P0, C0, Kn <: HList, Ku <: HList] = KeyDescriptor[P0, C0] {
       type KeyColumnNames = Kn
       type Key = Ku
@@ -86,7 +85,6 @@ object Context {
     import scsc.ops.hlist.{Extract, GetNames, ToOptional}
     import shapeless.ops.hlist.Prepend
 
-    //todo fix this
     type Aux[P0, C0, O0, CN <: HList, R <: HList] = RecordDescriptor[P0, C0, O0] {
       type ColumnNames = CN
       type Record = R

@@ -46,9 +46,9 @@ object CqlDataType {
 
   sealed trait CqlTypeOps[C <: CqlDataType] {
 
-    import scsc.ops.show.CqlTypeShow
+    import scsc.ops.show.CqlDataTypeShow
 
-    def getName(implicit show: CqlTypeShow[C]): String = show()
+    def getName(implicit show: CqlDataTypeShow[C]): String = show()
 
     def apply[N <: Singleton with String](name: N): Column[N, C] = Column[N, C]
   }
