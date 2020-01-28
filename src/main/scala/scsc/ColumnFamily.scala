@@ -3,14 +3,11 @@ package scsc
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import shapeless.HList
 //todo figure out this type signature
-sealed trait ColumnFamily[K <: HList, R <: HList] {
+sealed trait ColumnFamily[K <: HList, V <: HList] {
 
-  type Key = K
-  type Record = R
-  type KeyColumnNames <: HList
-  type ColumnNames <: HList
-  // val keySpace: KeySpace
-  val cqlId: CqlIdentifier
+
+  val keyColumns: ColumnSet[K]
+  val valueColumns: ColumnSet[V]
   /*
   def put(record: Record): Future[Unit]
   def put(records: Iterable[Record]): Future[Unit]

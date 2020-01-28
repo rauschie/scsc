@@ -10,6 +10,7 @@ trait Context[P0 <: HList, C0 <: HList, O0 <: HList] {
 }
 
 object Context {
+  //todo clean this up, use ColumnSet union
 
   type Aux[P0 <: HList, C0 <: HList, O0 <: HList, KN <: HList, K <: HList, CN, R <: HList] =
     Context[P0, C0, O0] {

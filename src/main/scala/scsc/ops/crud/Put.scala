@@ -10,7 +10,7 @@ sealed trait Put[Kl, Cl, Nl] {
 }
 
 object Put {
-
+//todo try making implicit resolution work with only 2 types
   implicit def put[Kl <: HList, Cl, Kn <: HList, Cn <: HList, Nl <: HList](
       implicit keyColumnNames: GetNames.Aux[Kl, Kn],
       columnNames: GetNames.Aux[Cl, Cn],
