@@ -9,7 +9,7 @@ sealed trait Put[Kl, Cl, Nl] {
   def getQuery(keySpaceName: String, tableName: String): String
 }
 
-object Put extends {
+object Put {
 
   implicit def put[Kl <: HList, Cl, Kn <: HList, Cn <: HList, Nl <: HList](
       implicit keyColumnNames: GetNames.Aux[Kl, Kn],

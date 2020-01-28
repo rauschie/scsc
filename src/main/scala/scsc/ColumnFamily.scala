@@ -1,4 +1,4 @@
-package scsc.schema
+package scsc
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
 import shapeless.HList

@@ -4,7 +4,7 @@ import com.datastax.oss.driver.api.core.cql.SimpleStatement
 
 sealed trait Create[P, C, O] {
 
-  import scsc.schema.ColumnFamily
+  import scsc.ColumnFamily
 
   /*
     CREATE TABLE cycling.cyclist_id (

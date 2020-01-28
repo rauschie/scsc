@@ -1,4 +1,4 @@
-package scsc.schema
+package scsc
 
 /**
   * Holds the global CqlSession instance

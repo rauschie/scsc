@@ -4,6 +4,7 @@ import com.datastax.oss.driver.api.core.CqlIdentifier
 import com.datastax.oss.driver.api.core.cql.BoundStatement
 
 sealed trait Setter[A] {
+  //todo make this use a Builder
   def setValueTo(
       boundStatement: BoundStatement,
       columnId: CqlIdentifier,

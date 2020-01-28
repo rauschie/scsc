@@ -1,21 +1,17 @@
-package scsc.schema
+package scsc
 
 import com.datastax.oss.driver.api.core.CqlIdentifier
+
 import scala.concurrent.Future
 
 trait KeySpace {
 
   import com.datastax.oss.driver.api.core.CqlSession
   import scsc.ops.Context
-  import scsc.schema
   import shapeless.{HList, HNil}
 
-  import scala.concurrent.ExecutionContextExecutor
-
-  import scsc.schema.ColumnFamily
   val cqlId: CqlIdentifier
   protected val session: CqlSession
-  implicit val ec: ExecutionContextExecutor
 
   def getColumnFamily[P <: HList, C <: HList, O <: HList](name: String)(
       partitioningColumns: P,
