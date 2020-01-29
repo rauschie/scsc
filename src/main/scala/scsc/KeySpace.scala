@@ -1,8 +1,6 @@
 package scsc
 
-import com.datastax.oss.driver.api.core.CqlIdentifier
 
-import scala.concurrent.Future
 
 trait KeySpace {
 
@@ -17,7 +15,7 @@ trait KeySpace {
   )(optionalColumns: O = HNil)(
       implicit context: Context[P, C, O]
   ): Transaction[
-    ColumnFamily.Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames]
+    ColumnFamily[context.K,context.V]
   ]
 
   /**
