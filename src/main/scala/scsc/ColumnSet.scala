@@ -7,8 +7,8 @@ sealed trait ColumnSet[L] {
   type Names <: HList
   type Values <: HList
 
-  def union[A, O<:HList](other: ColumnSet[A])(implicit union: SetUnion.Aux[L, A, O],
-                                       ev: ColumnSet[O]): ColumnSet[O] = ev
+  def union[A, O <: HList](other: ColumnSet[A])(implicit union: SetUnion.Aux[L, A, O],
+                                                ev: ColumnSet[O]): ColumnSet[O] = ev
 }
 
 object ColumnSet {
@@ -23,9 +23,11 @@ object ColumnSet {
 
   def apply[L](implicit cs: ColumnSet[L]): ColumnSet[L] = cs
 
-  implicit def columnSet[L<:HList](implicit ev: IsDistinctConstraint[L],
-                            getNames: GetNames[L],
-                            getTypes: GetTypes[L]): Aux[L, getNames.MappedTo, getTypes.MappedTo] =
+  implicit def columnSet[L <: HList](
+      implicit ev: IsDistinctConstraint[L],
+      getNames: GetNames[L],
+      getTypes: GetTypes[L]
+  ): Aux[L, getNames.MappedTo, getTypes.MappedTo] =
     new ColumnSet[L] {
       type Names = getNames.MappedTo
       type Values = getTypes.MappedTo

@@ -3,7 +3,7 @@ package scsc.ops.hlist
 import scsc.ops.BinaryTypeMapping
 import shapeless.{::, HList, HNil, NotContainsConstraint}
 
-sealed trait SetUnion[M, N] extends BinaryTypeMapping[M, N]{type MappedTo<:HList}
+sealed trait SetUnion[M, N] extends BinaryTypeMapping[M, N] { type MappedTo <: HList }
 
 object SetUnion extends LowPrioritySetUnion {
 
@@ -11,24 +11,23 @@ object SetUnion extends LowPrioritySetUnion {
     type MappedTo = O
   }
 
-  implicit def add[M <: HList, H, T <: HList](
-      implicit ev: NotContainsConstraint[M, H],
-      union: SetUnion[H :: M, T]
-  ): Aux[M, H :: T, union.MappedTo] = new SetUnion[M, H :: T] {
+  implicit def add[H, T <: HList, N <: HList](
+      implicit ev: NotContainsConstraint[N, H],
+      union: SetUnion[T, H :: N]
+  ): Aux[H :: T, N, union.MappedTo] = new SetUnion[H :: T, N] {
     type MappedTo = union.MappedTo
-
   }
 
-  implicit def addHNil[L<:HList]: Aux[L, HNil, L] = new SetUnion[L, HNil] {
+  implicit def addHNil[L <: HList]: Aux[HNil, L, L] = new SetUnion[HNil, L] {
     type MappedTo = L
   }
 }
 
 trait LowPrioritySetUnion {
 
-  implicit def skip[M, H, T <: HList](
-      implicit union: SetUnion[M, T]
-  ): SetUnion.Aux[M, H :: T, union.MappedTo] = new SetUnion[M, H :: T] {
+  implicit def skip[H, T <: HList, N](
+      implicit union: SetUnion[T, N]
+  ): SetUnion.Aux[H :: T, N, union.MappedTo] = new SetUnion[H :: T, N] {
     type MappedTo = union.MappedTo
   }
 }

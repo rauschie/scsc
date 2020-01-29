@@ -12,7 +12,7 @@ class SetUnionTest extends AnyWordSpec {
       "return the original set" in {
         import scsc.TestKeyColumns
         import shapeless.HNil
-        val union = the[SetUnion[TestKeyColumns, HNil]]
+        val union = the[SetUnion[HNil, TestKeyColumns]]
         the[union.MappedTo <:< TestKeyColumns]
       }
     }
