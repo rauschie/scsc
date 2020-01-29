@@ -36,52 +36,52 @@ object ColumnFamily {
     type KeyColumnNames = KN
     type ColumnNames = CN
   }
-
-  private[schema] def createFromPartitioningColumns[P <: HList](n: String /*,ks: KeySpace*/ )(
-      partitioningColumns: P
-  )(
-      implicit context: Context[P, HNil, HNil]
-  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
-    new ColumnFamily[context.Key, context.Record] {
-      type KeyColumnNames = context.KeyColumnNames
-      type ColumnNames = context.ColumnNames
-      // val keySpace: KeySpace = ks
-      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
-    }
-
-  private[schema] def create[P <: HList, C <: HList, O <: HList](n: String /*, ks: KeySpace*/
-  )(partitioningColumns: P, clusteringColumns: C)(optionalColumns: O)(
-      implicit context: Context[P, C, O]
-  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
-    new ColumnFamily[context.Key, context.Record] {
-
-      type KeyColumnNames = context.KeyColumnNames
-      type ColumnNames = context.ColumnNames
-      //  val keySpace: KeySpace = ks
-      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
-    }
-
-  private[schema] def createFromKeyColumns[P <: HList, C <: HList](n: String /*, ks: KeySpace*/ )(
-      partitioningColumns: P,
-      clusteringColumns: C
-  )(
-      implicit context: Context[P, C, HNil]
-  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
-    new ColumnFamily[context.Key, context.Record] {
-      type KeyColumnNames = context.KeyColumnNames
-      type ColumnNames = context.ColumnNames
-      //val keySpace: KeySpace = ks
-      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
-    }
-
-  private[schema] def createFromOptionalColumns[P <: HList, O <: HList](n: String /*, ks: KeySpace*/
-  )(partitioningColumns: P, optionalColumns: O)(
-      implicit context: Context[P, HNil, O]
-  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
-    new ColumnFamily[context.Key, context.Record] {
-      type KeyColumnNames = context.KeyColumnNames
-      type ColumnNames = context.ColumnNames
-      //val keySpace: KeySpace = ks
-      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
-    }
+//
+//  private[schema] def createFromPartitioningColumns[P <: HList](n: String /*,ks: KeySpace*/ )(
+//      partitioningColumns: P
+//  )(
+//      implicit context: Context[P, HNil, HNil]
+//  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
+//    new ColumnFamily[context.Key, context.Record] {
+//      type KeyColumnNames = context.KeyColumnNames
+//      type ColumnNames = context.ColumnNames
+//      // val keySpace: KeySpace = ks
+//      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
+//    }
+//
+//  private[schema] def create[P <: HList, C <: HList, O <: HList](n: String /*, ks: KeySpace*/
+//  )(partitioningColumns: P, clusteringColumns: C)(optionalColumns: O)(
+//      implicit context: Context[P, C, O]
+//  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
+//    new ColumnFamily[context.Key, context.Record] {
+//
+//      type KeyColumnNames = context.KeyColumnNames
+//      type ColumnNames = context.ColumnNames
+//      //  val keySpace: KeySpace = ks
+//      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
+//    }
+//
+//  private[schema] def createFromKeyColumns[P <: HList, C <: HList](n: String /*, ks: KeySpace*/ )(
+//      partitioningColumns: P,
+//      clusteringColumns: C
+//  )(
+//      implicit context: Context[P, C, HNil]
+//  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
+//    new ColumnFamily[context.Key, context.Record] {
+//      type KeyColumnNames = context.KeyColumnNames
+//      type ColumnNames = context.ColumnNames
+//      //val keySpace: KeySpace = ks
+//      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
+//    }
+//
+//  private[schema] def createFromOptionalColumns[P <: HList, O <: HList](n: String /*, ks: KeySpace*/
+//  )(partitioningColumns: P, optionalColumns: O)(
+//      implicit context: Context[P, HNil, O]
+//  ): Aux[context.Key, context.Record, context.KeyColumnNames, context.ColumnNames] =
+//    new ColumnFamily[context.Key, context.Record] {
+//      type KeyColumnNames = context.KeyColumnNames
+//      type ColumnNames = context.ColumnNames
+//      //val keySpace: KeySpace = ks
+//      val cqlId: CqlIdentifier = CqlIdentifier.fromCql(n)
+//    }
 }

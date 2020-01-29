@@ -1,7 +1,8 @@
 package object scsc {
 
   import scsc.CqlDataType._
-  import shapeless.{::, HNil}
+  import scsc.ops.hlist.ToOptionalColumns
+  import shapeless.{::, the, HNil}
 
   type TestKey = String :: Int :: Double :: HNil
   type TestRecord = String :: Int :: Double :: Option[Boolean] :: HNil
@@ -11,6 +12,7 @@ package object scsc {
   type TestKeyNames = "foo" :: "bar" :: "baz" :: HNil
   type TestColumnNames = "foo" :: "bar" :: "baz" :: "qux" :: HNil
   type TestKeyColumns = Column["foo", String] :: Column["bar", Int] :: Column["baz", Double] :: HNil
+  val a: Column["foo", INT] :: Column["bar", ASCII] :: Column["baz", UUID] :: HNil = INT("foo") :: ASCII("bar") :: UUID("baz") :: HNil
 
   type TestColumns =
     Column["foo", String] :: Column["bar", Int] :: Column["baz", Double] :: Column["qux", Option[
