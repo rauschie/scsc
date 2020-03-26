@@ -3,7 +3,7 @@
 #### A functional wrapper around [DataStax Java Driver for Apache Cassandra](https://github.com/datastax/java-driver)
 
 #### Typesafe CRUD transactions checked at compile time:
-
+```scala
 import scsc.{Cassandra, ColumnFamily, Transaction}
 import scsc.CqlDataType._
 import shapeless.{::, HNil}
@@ -22,3 +22,4 @@ val transaction: Transaction[Unit] = Cassandra
   )
 
 lazy val run: Future[Unit] = transaction.future
+```
