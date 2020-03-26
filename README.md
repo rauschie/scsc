@@ -13,7 +13,8 @@ val transaction: Transaction[Unit] = Cassandra
   .getKeySpace("cycling")
   .flatMap(schema =>
       schema
-        .get("cyclist_name",
+        .get(
+             "cyclist_name",
              ColumnFamily(Long("id") :: String("firstname") :: String("lastname") :: HNil)
              )
         .map(table =>
