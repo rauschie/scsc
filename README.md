@@ -15,7 +15,7 @@ val transaction: Transaction[Unit] = Cassandra
       schema
         .get(
              "cyclist_name",
-             ColumnFamily(Long("id") :: String("firstname") :: String("lastname") :: HNil)
+             ColumnFamily(LONG("id") :: TEXT("firstname") :: TEXT("lastname") :: HNil)
              )
         .map(table =>
                table.put(1 :: "Ratto" :: "Risella" :: HNil)
