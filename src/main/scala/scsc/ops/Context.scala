@@ -1,6 +1,7 @@
 package scsc.ops
 
 import shapeless.HList
+import scala.annotation.nowarn
 
 trait Context[P0, C0, O0] {
 
@@ -23,7 +24,17 @@ object Context {
       type V = V0
     }
 
-  implicit def context[P0, P <: HList, C0, C <: HList, O0, O <: HList, K0 <: HList, V0 <: HList](
+  @nowarn("cat=unused-params")
+  implicit def context[
+      P0,
+      P <: HList,
+      C0,
+      C <: HList,
+      O0,
+      O <: HList,
+      K0 <: HList,
+      V0 <: HList
+  ](
       implicit ev: ToKeyColumns.Aux[P0, P],
       ev1: ToKeyColumns.Aux[C0, C],
       partitioning: ColumnSet[P],
