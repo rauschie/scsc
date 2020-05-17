@@ -1,5 +1,7 @@
 package scsc
 
+import scala.annotation.nowarn
+
 sealed trait ColumnSet[L] {
 
   import scsc.ops.hlist.SetUnion
@@ -7,8 +9,10 @@ sealed trait ColumnSet[L] {
   type Names <: HList
   type Values <: HList
 
-  def union[A, O <: HList](other: ColumnSet[A])(implicit union: SetUnion.Aux[L, A, O],
-                                                ev: ColumnSet[O]): ColumnSet[O] = ev
+  @nowarn("cat=unused-params")
+  def union[A, O <: HList](
+      other: ColumnSet[A]
+  )(implicit union: SetUnion.Aux[L, A, O], ev: ColumnSet[O]): ColumnSet[O] = ev
 }
 
 object ColumnSet {
@@ -23,6 +27,7 @@ object ColumnSet {
 
   def apply[L](implicit cs: ColumnSet[L]): ColumnSet[L] = cs
 
+  @nowarn("cat=unused-params")
   implicit def columnSet[L <: HList](
       implicit ev: IsDistinctConstraint[L],
       getNames: GetNames[L],
