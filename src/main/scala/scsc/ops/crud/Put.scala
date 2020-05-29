@@ -3,26 +3,24 @@ package scsc.ops.crud
 import shapeless.HList
 import scsc.ops.hlist.{GetNames, ToStrings}
 import shapeless.BasisConstraint
+import scala.annotation.nowarn
 
-sealed trait Put[Kl, Cl, Nl] {
+sealed trait Put[KeyColumns, Columns, ColumnNames] {
 
-  def getQuery(keySpaceName: String, tableName: String): String
+  val query: (String, String) => String
 }
 
 object Put {
 //todo try making implicit resolution work with only 2 types
-  implicit def put[Kl <: HList, Cl, Kn <: HList, Cn <: HList, Nl <: HList](
+  @nowarn("cat=unused-params")
+  implicit def put[Kl <: HList, Cl, Kn <: HList, Cn <: HList, Names <: HList](
       implicit keyColumnNames: GetNames.Aux[Kl, Kn],
       columnNames: GetNames.Aux[Cl, Cn],
-      ev: BasisConstraint[Kn, Nl],
-      names: ToStrings[Nl]
-  ): Put[Kl, Cl, Nl] = new Put[Kl, Cl, Nl] {
-
-    type Names = Nl
-
-    def getQuery(keySpaceName: String, tableName: String): String = {
+      ev: BasisConstraint[Kn, Names],
+      names: ToStrings[Names]
+  ): Put[Kl, Cl, Names] = new Put[Kl, Cl, Names] {
+    val query = (keySpaceName, tableName) =>
       s"INSERT INTO $tableName (${names().mkString(", ")}) " +
-        s"VALUES (${names() map (_ => "?") mkString ", "})"
-    }
+        s"VALUES (${(names() map (_ => "?")).mkString(", ")})"
   }
 }

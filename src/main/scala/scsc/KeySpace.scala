@@ -1,12 +1,9 @@
 package scsc
 
-
-
 trait KeySpace {
 
   import scsc.ops.Context
   import shapeless.{HList, HNil}
-
 
   //todo impl
   def getColumnFamily[P <: HList, C <: HList, O <: HList](name: String)(
@@ -15,7 +12,7 @@ trait KeySpace {
   )(optionalColumns: O = HNil)(
       implicit context: Context[P, C, O]
   ): Transaction[
-    ColumnFamily[context.K,context.V]
+    ColumnFamily[context.K, context.V]
   ]
 
   /**

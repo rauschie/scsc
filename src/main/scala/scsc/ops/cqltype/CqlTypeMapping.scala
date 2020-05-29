@@ -3,6 +3,9 @@ package scsc.ops.cqltype
 import scsc.CqlDataType
 import scsc.ops.UnaryTypeMapping
 
+/**
+  * type class mapping CQL datatypes to their corresponding java types
+  */
 sealed trait CqlTypeMapping[C <: CqlDataType] extends UnaryTypeMapping[C]
 
 object CqlTypeMapping {

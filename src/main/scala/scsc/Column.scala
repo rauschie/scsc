@@ -1,8 +1,12 @@
 package scsc
 
-sealed trait Column[N <: String, A]
+/**
+  * Trait representing a database column
+  */
+sealed trait Column[Name <: String, A]
 
 object Column {
 
-  def apply[N <: Singleton with String, A]: Column[N, A] = new Column[N, A] {}
+  def apply[Name <: Singleton with String, A]: Column[Name, A] =
+    new Column[Name, A] {}
 }

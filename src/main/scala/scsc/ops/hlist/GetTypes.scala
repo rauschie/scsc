@@ -4,7 +4,7 @@ import scsc.Column
 import scsc.ops.UnaryTypeMapping
 import shapeless.{::, HList, HNil}
 
-sealed trait GetTypes[L] extends UnaryTypeMapping[L] {
+sealed trait GetTypes[Columns] extends UnaryTypeMapping[Columns] {
   type MappedTo <: HList
 }
 

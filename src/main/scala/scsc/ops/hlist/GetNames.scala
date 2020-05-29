@@ -3,7 +3,7 @@ package scsc.ops.hlist
 import scsc.ops.UnaryTypeMapping
 import shapeless.{::, HList, HNil}
 
-sealed trait GetNames[L] extends UnaryTypeMapping[L] {
+sealed trait GetNames[Columns] extends UnaryTypeMapping[Columns] {
   type MappedTo <: HList
 }
 
@@ -11,7 +11,7 @@ object GetNames {
 
   import scsc.Column
 
-  type Aux[L, O <: HList] = GetNames[L] {
+  type Aux[Columns, O <: HList] = GetNames[Columns] {
     type MappedTo = O
   }
 

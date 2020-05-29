@@ -3,7 +3,7 @@ package scsc.ops
 import shapeless.HList
 import scala.annotation.nowarn
 
-trait Context[P0, C0, O0] {
+trait Context[Partitioning0, Clustering0, Optional0] {
 
   import scsc.ColumnSet
 
