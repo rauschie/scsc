@@ -10,7 +10,7 @@ import scsc.CqlDataType._
 import shapeless.{::, HNil}
 
 
-val transaction: Transaction[Unit] = Cassandra
+val transaction: Transaction[ColumnFamily] = Cassandra
   .getKeySpace("cycling")
   .flatMap(schema =>
       schema.get(
@@ -22,7 +22,7 @@ val transaction: Transaction[Unit] = Cassandra
              )
   )
 
-lazy val run: Future[Unit] = transaction.run
+lazy val run: Future[ColumnFamily] = transaction.run
 ```
 
 I'm writing this library to get familiar with more advanced functional and type-level programming techniques, as well as to get acquainted with Apache Cassandra and distributed datastores in general. It draws inspiration from [doobie](https://tpolecat.github.io/doobie/) and [shapeless](https://github.com/milessabin/shapeless), while also relying heavily on the latter.
